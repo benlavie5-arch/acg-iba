@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roster & Ratings | ACG IBA</title>
+<meta name="description" content="ACG IBA is a coached preparation program, not a resume line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move. Members work through technical and behavioral mocks and are scored after every session.">
+
+<meta name="theme-color" content="#0A1628">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230A1628%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-family=%27Georgia,serif%27 font-size=%2715%27 fill=%27white%27 text-anchor=%27middle%27%3EAI%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ACG IBA">
+<meta property="og:title" content="Roster & Ratings | ACG IBA">
+<meta property="og:description" content="ACG IBA is a coached preparation program, not a resume line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move. Members work through technical and behavioral mocks and are scored after every session.">
+<meta property="og:image" content="img/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Once the site has a real URL, change og:image to the full absolute
+     address (https://yoursite/img/og-cover.png) and add og:url.
+     Relative og: paths are not resolved by most link previewers. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">AI</span>
+      <span><b>ACG&nbsp;IBA</b><span>UTSA &rarr; UT &rarr; Banking</span></span>
+    </a>
+    <button class="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav class="main" id="mainnav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="apply.html">Apply</a>
+      <a href="roster.html">Roster &amp; Ratings <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+      <a href="timeline.html">Timeline <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+      <a href="coursework.html">Coursework <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="tight" style="padding-top:40px">
+  <div class="wrap">
+    <p class="eyebrow">Member portal</p>
+    <h1 style="font-size:clamp(2rem,4.4vw,3rem)">Roster &amp; Ratings</h1>
+    <div class="whoami" id="whoami"></div>
+  </div>
+</section>
+
+<section class="tight" style="padding-top:0">
+  <div class="wrap">
+    <div class="flex between" style="margin-bottom:16px">
+      <div class="flex">
+        <input type="text" id="search" placeholder="Search members" aria-label="Search members" style="width:210px">
+        <select id="cohortFilter" aria-label="Filter by cohort" style="width:auto"><option value="">All cohorts</option></select>
+      </div>
+      <div class="flex" id="coachTools" style="display:none">
+        <button class="btn btn-outline btn-sm" id="btnAddMember">+ Member</button>
+        <button class="btn btn-primary btn-sm" id="btnLogMock">Log a mock</button>
+        <button class="btn btn-outline btn-sm" id="btnExport">Export roster.json</button>
+        <button class="btn btn-outline btn-sm" id="btnClear">Clear all</button>
+      </div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:52px">#</th>
+            <th>Member</th>
+            <th style="width:92px">Overall</th>
+            <th style="width:140px" class="hidesm">Technical</th>
+            <th style="width:140px" class="hidesm">Behavioral</th>
+            <th style="width:140px" class="hidesm">Markets</th>
+            <th style="width:72px" class="hidesm">Mocks</th>
+            <th style="width:78px">Trend</th>
+          </tr>
+        </thead>
+        <tbody id="board"></tbody>
+      </table>
+    </div>
+    <p class="small mt24" id="boardNote"></p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="sechead">
+      <p class="eyebrow">How the program runs</p>
+      <h2>Reps, scored honestly, repeated.</h2>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <span class="num">01</span>
+        <h3>Mock interviews</h3>
+        <p>Technical screens, behavioral rounds and full mocks. A session doesn't have to cover everything. A technical screen scores only the technical competencies it actually tested.</p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>Coach scoring</h3>
+        <p>A coach logs a 1&ndash;10 on every competency the mock covered, plus written notes. Every coach is a current UT student who transferred from UTSA. Andrew and Ben rate today.</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>Weighted profile</h3>
+        <p>Each new mock counts twice as much as the one before it. Your profile tracks current ability rather than averaging away recent progress.</p>
+      </div>
+    </div>
+    <div class="note info mt32">
+      <b>Why recency-weighted?</b> A flat average punishes you for a bad first mock forever. Doubling the weight of each newer session means a member who was a 5 in September and a 9 in November reads as close to a 9, which is the number that actually predicts how the real interview goes.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sechead">
+      <p class="eyebrow">The rating model</p>
+      <h2>What gets scored.</h2>
+      <p class="lede">Overall is a 1&ndash;10 composite of three pillars. Only competencies that have actually been tested count toward a score.</p>
+    </div>
+    <div class="grid g3" id="modelCards"></div>
+  </div>
+</section>
+
+<section class="alt tight">
+  <div class="wrap">
+    <p class="eyebrow">Reading the numbers</p>
+    <h3 style="margin-bottom:10px">How a score is built</h3>
+    <p class="small" style="max-width:76ch">Each competency is scored 1 to 10 only on the mocks that actually tested it. Within a competency, mocks are weighted by recency: the newest counts <b id="decayTxt"></b> times the one before it, 4 times the one before that, and so on. Pillar and overall scores renormalise over whatever has been tested, so an untested competency never drags a score down. It simply doesn't count yet.</p>
+  </div>
+</section>
+
+<script>
+let ROLE=null;
+
+document.addEventListener("DOMContentLoaded",()=>{
+  requireAccess(async role=>{
+    ROLE=role;
+    await DB.load();
+    document.getElementById("decayTxt").textContent=DECAY;
+    renderWhoAmI(); buildCohortFilter(); renderBoard();
+    if(role==="coach") document.getElementById("coachTools").style.display="flex";
+    wireControls();
+  });
+});
+
+/* ---------- header strip ---------- */
+function renderWhoAmI(){
+  const el=document.getElementById("whoami");
+  const badge = ROLE==="coach"
+    ? '<span class="pill coach">Coach access</span>'
+    : '<span class="pill">Member access (view only)</span>';
+  const local = DB.hasLocalEdits()
+    ? ' <span class="pill">Unsaved local changes, export to commit</span>' : '';
+  el.innerHTML = badge + local +
+    ' <button type="button" id="signout" class="linklike">Sign out</button>';
+  document.getElementById("signout").addEventListener("click",signOut);
+}
+
+function buildCohortFilter(){
+  const sel=document.getElementById("cohortFilter");
+  const current=sel.value;
+  sel.innerHTML='<option value="">All cohorts</option>';
+  [...new Set(DB.participants.map(p=>p.cohort).filter(Boolean))].sort().forEach(c=>{
+    const o=document.createElement("option"); o.value=c; o.textContent=c; sel.appendChild(o);
+  });
+  if([...sel.options].some(o=>o.value===current)) sel.value=current;
+}
+
+/* ---------- leaderboard ---------- */
+function renderBoard(){
+  const q=(document.getElementById("search").value||"").toLowerCase();
+  const cf=document.getElementById("cohortFilter").value;
+  let rows=rankedBoard();
+  if(q)  rows=rows.filter(r=>r.participant.name.toLowerCase().includes(q));
+  if(cf) rows=rows.filter(r=>r.participant.cohort===cf);
+
+  const tb=document.getElementById("board");
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:34px">No members match.</td></tr>';
+  }else{
+    tb.innerHTML=rows.map(r=>{
+      const p=r.participant;
+      const cell=k=>{
+        const v=r.pillars[k].value;
+        return v===null
+          ? '<span class="score s-na">not tested</span>'
+          : `<div class="flex" style="gap:8px"><span style="font-family:var(--serif);font-size:1rem;min-width:22px">${v.toFixed(1)}</span><span class="bar"><i class="${barClass(v)}" style="width:${v*10}%"></i></span></div>`;
+      };
+      const tr = r.trend===null ? '<span class="pill">n/a</span>'
+        : r.trend>0 ? `<span class="pill up">&#9650; ${r.trend.toFixed(1)}</span>`
+        : r.trend<0 ? `<span class="pill down">&#9660; ${Math.abs(r.trend).toFixed(1)}</span>`
+        : '<span class="pill">flat</span>';
+      return `<tr data-id="${p.id}" tabindex="0" role="button"
+            aria-label="Open scored profile for ${esc(p.name)}">
+        <td class="rankno ${r.rank&&r.rank<=3?"top":""}">${r.rank??"&ndash;"}</td>
+        <td><div class="namecell"><div class="avatar">${initials(p.name)}</div>
+            <div><b>${esc(p.name)}</b><em>${[p.school,p.cohort].filter(Boolean).map(esc).join(" &middot; ")}</em></div></div></td>
+        <td><span class="score ${scoreClass(r.overall)}">${fmtScore(r.overall)}</span></td>
+        <td class="hidesm">${cell("technical")}</td>
+        <td class="hidesm">${cell("behavioral")}</td>
+        <td class="hidesm">${cell("market")}</td>
+        <td class="hidesm">${r.mockCount}</td>
+        <td>${tr}</td>
+      </tr>`;
+    }).join("");
+    tb.querySelectorAll("tr[data-id]").forEach(tr=>{
+      const open=()=>openProfile(tr.dataset.id);
+      tr.addEventListener("click",open);
+      tr.addEventListener("keydown",e=>{
+        if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); }
+      });
+    });
+  }
+
+  const rated=rows.filter(r=>r.overall!==null).length;
+  document.getElementById("boardNote").innerHTML =
+    `${rows.length} member${rows.length===1?"":"s"} shown &middot; ${rated} rated &middot; `+
+    `${DB.mocks.length} mocks logged. Click any row for the full scored profile.`;
+}
+
+/* ---------- profile drawer ---------- */
+function openProfile(id){
+  const p=DB.participant(id);
+  const s=profileScores(id);
+  const t=trendFor(id);
+  const mocks=DB.mocksFor(id).slice().reverse();   // newest first for display
+
+  const pillarBlocks=Object.values(s.pillars).map(pl=>{
+    const subs=Object.entries(pl.subs).map(([k,sub])=>{
+      const pct=pctOfPillar(sub.weight,pl.key);
+      if(sub.value===null) return `<div class="metricrow" style="opacity:.5">
+        <span class="mname">${sub.label}<span>${pct}% of pillar</span></span>
+        <span class="mval" style="font-family:var(--sans);font-size:.8rem;color:var(--muted-light)">n/a</span>
+        <span class="small" style="color:var(--muted-light)">not tested</span></div>`;
+      return `<div class="metricrow">
+        <span class="mname">${sub.label}<span>${pct}% of pillar &middot; ${sub.n} mock${sub.n===1?"":"s"}</span></span>
+        <span class="mval">${sub.value.toFixed(1)}</span>
+        <span class="bar"><i class="${barClass(sub.value)}" style="width:${sub.value*10}%"></i></span>
+      </div>`;
+    }).join("");
+    const cov = pl.coverage<pl.totalWeight && pl.coverage>0
+      ? `<p class="small" style="margin:8px 0 0;color:var(--muted-light)">Scored on ${Math.round(pl.coverage/pl.totalWeight*100)}% of this pillar's weight so far.</p>` : "";
+    return `<div class="pillarhead">
+        <h4>${pl.label} <span class="pw">${pl.weight}% of overall</span></h4>
+        <span class="pv ${scoreClass(pl.value)}">${fmtScore(pl.value)}</span>
+      </div>${subs}${cov}`;
+  }).join("");
+
+  const history=mocks.length? mocks.map(m=>{
+    const covered=Object.keys(m.scores||{}).length;
+    const del = ROLE==="coach" ? `<button class="btn btn-outline btn-sm" data-del="${m.id}" style="margin-top:9px">Delete</button>`:"";
+    return `<div class="card" style="padding:17px;margin-bottom:11px">
+      <div class="flex between" style="margin-bottom:7px">
+        <b style="font-size:.93rem">${esc(m.type)||"Mock"}</b>
+        <span class="small">${fmtDate(m.date)}</span>
+      </div>
+      <p class="small" style="margin:0 0 7px">Coach: ${esc(m.coach)||"n/a"} &middot; ${covered} competenc${covered===1?"y":"ies"} scored</p>
+      ${m.notes?`<p style="font-size:.9rem;margin:0;color:var(--muted)">${esc(m.notes)}</p>`:""}
+      ${del}
+    </div>`;
+  }).join("") : '<p class="small">No mocks logged yet.</p>';
+
+  const trendTxt = t===null?"":
+    t>0?`<span class="pill up">&#9650; ${t.toFixed(1)} since last mock</span>`:
+    t<0?`<span class="pill down">&#9660; ${Math.abs(t).toFixed(1)} since last mock</span>`:
+    `<span class="pill">flat</span>`;
+
+  openDrawer(`
+    <div class="person" style="margin-bottom:22px">
+      <div class="avatar lg">${initials(p.name)}</div>
+      <div>
+        <h2 style="font-size:1.9rem">${esc(p.name)}</h2>
+        <p class="small" style="margin:2px 0 0">${[p.school,p.track,p.cohort].filter(Boolean).map(esc).join(" &middot; ")}</p>
+        <p class="small" style="margin:2px 0 0">${p.gradYear?"Class of "+p.gradYear:""}</p>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;padding:22px;margin-bottom:6px">
+      <p class="eyebrow" style="margin-bottom:6px">Overall</p>
+      <div class="score ${scoreClass(s.overall)}" style="font-size:3.4rem">${fmtScore(s.overall)}</div>
+      <p class="small" style="margin:6px 0 0">${s.mockCount} mock${s.mockCount===1?"":"s"} &middot; last ${s.lastMock?fmtDate(s.lastMock.date):"n/a"}</p>
+      <div style="margin-top:10px">${trendTxt}</div>
+    </div>
+    ${pillarBlocks}
+    <h3 style="margin:34px 0 14px">Mock history</h3>
+    ${history}
+    ${ROLE==="coach" ? `
+      <div style="margin-top:34px;padding-top:22px;border-top:1px solid var(--rule)">
+        <p class="small" style="margin:0 0 10px"><b>Remove this member</b></p>
+        <p class="small" style="margin:0 0 12px;color:var(--muted)">
+          Deletes ${esc(p.name)} and ${s.mockCount} logged mock${s.mockCount===1?"":"s"}.
+          This cannot be undone from here, though the committed
+          <span class="mono">roster.json</span> is unaffected until you export and commit.</p>
+        <button class="btn btn-outline btn-sm" data-delmember="${esc(p.id)}">Delete member</button>
+      </div>` : ""}
+  `);
+
+  const dm=document.querySelector("[data-delmember]");
+  if(dm) dm.addEventListener("click",()=>{
+    if(dm.dataset.armed){
+      const n=DB.deleteParticipant(dm.dataset.delmember);
+      closeDrawer(); buildCohortFilter(); renderBoard(); renderWhoAmI();
+    }else{
+      dm.dataset.armed="1";
+      dm.textContent="Click again to permanently delete";
+      dm.style.borderColor="var(--bad)"; dm.style.color="var(--bad)";
+      setTimeout(()=>{ if(dm.isConnected){ delete dm.dataset.armed;
+        dm.textContent="Delete member"; dm.style.borderColor=""; dm.style.color=""; } },4000);
+    }
+  });
+
+  document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+    if(b.dataset.armed){
+      DB.deleteMock(b.dataset.del); closeDrawer(); renderBoard(); renderWhoAmI();
+    }else{
+      b.dataset.armed="1";
+      b.textContent="Click again to confirm delete";
+      b.style.borderColor="var(--bad)"; b.style.color="var(--bad)";
+      setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent="Delete";
+        b.style.borderColor=""; b.style.color=""; } },4000);
+    }
+  }));
+}
+
+/* ---------- coach: log a mock ---------- */
+function logMockForm(preselect){
+  const opts=DB.participants.map(p=>`<option value="${esc(p.id)}" ${p.id===preselect?"selected":""}>${esc(p.name)}</option>`).join("");
+  const groups=Object.entries(MODEL).map(([pk,p])=>{
+    const items=Object.entries(p.subs).map(([k,s])=>`
+      <div class="scoreitem off" data-item="${k}">
+        <input type="checkbox" id="chk_${k}" data-chk="${k}">
+        <label for="chk_${k}">${s.label}</label>
+        <input type="number" min="1" max="10" step="0.5" id="val_${k}" data-val="${k}" disabled placeholder="&ndash;">
+      </div>`).join("");
+    return `<p class="eyebrow" style="margin:22px 0 9px">${p.label}</p><div class="scoregrid">${items}</div>`;
+  }).join("");
+
+  openDrawer(`
+    <h2 style="font-size:1.8rem;margin-bottom:6px">Log a mock</h2>
+    <p class="small">Tick only the competencies this session actually tested. Untested ones stay out of the calculation entirely.</p>
+    <form id="mockForm" style="margin-top:22px">
+      <div class="field"><label class="f">Member</label><select id="mkParticipant">${opts}</select></div>
+      <div class="fieldrow">
+        <div class="field"><label class="f">Date</label><input type="date" id="mkDate" value="${new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label class="f">Coach</label>
+          <select id="mkCoach"><option>Andrew Vu</option><option>Ben Lavie</option></select></div>
+      </div>
+      <div class="field"><label class="f">Mock type</label>
+        <select id="mkType">
+          <option>Full mock</option><option>Technical screen</option>
+          <option>Behavioral</option><option>Markets / stock pitch</option><option>Superday sim</option>
+        </select></div>
+      ${groups}
+      <div class="field" style="margin-top:22px"><label class="f">Notes</label>
+        <textarea id="mkNotes" placeholder="What went well, what to drill before the next session."></textarea></div>
+      <div class="flex" style="margin-top:8px">
+        <button class="btn btn-primary" type="submit">Save mock</button>
+        <button class="btn btn-outline" type="button" id="mkCancel">Cancel</button>
+      </div>
+      <p class="small" style="margin-top:14px">Saves to this browser. Use <b>Export roster.json</b> and commit the file so the whole cohort sees it.</p>
+    </form>
+  `);
+
+  document.querySelectorAll("[data-chk]").forEach(c=>c.addEventListener("change",()=>{
+    const k=c.dataset.chk;
+    const v=document.querySelector(`[data-val="${k}"]`);
+    const item=document.querySelector(`[data-item="${k}"]`);
+    v.disabled=!c.checked; item.classList.toggle("off",!c.checked);
+    if(c.checked){ if(!v.value) v.value=7; v.focus(); } else v.value="";
+  }));
+
+  document.getElementById("mkCancel").addEventListener("click",closeDrawer);
+  document.getElementById("mockForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const scores={};
+    document.querySelectorAll("[data-chk]").forEach(c=>{
+      if(c.checked){
+        const v=document.querySelector(`[data-val="${c.dataset.chk}"]`).value;
+        if(v!==""){
+          const n=clampScore(v);
+          if(n!==null) scores[c.dataset.chk]=n;
+        }
+      }
+    });
+    if(!Object.keys(scores).length){
+      let w=document.getElementById("mkWarn");
+      if(!w){ w=document.createElement("div"); w.id="mkWarn"; w.className="note";
+              w.style.marginTop="12px"; document.getElementById("mockForm").appendChild(w); }
+      w.innerHTML="<b>Nothing scored.</b> Tick at least one competency this mock tested.";
+      w.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+    DB.addMock({
+      participantId:document.getElementById("mkParticipant").value,
+      date:document.getElementById("mkDate").value,
+      coach:document.getElementById("mkCoach").value,
+      type:document.getElementById("mkType").value,
+      notes:document.getElementById("mkNotes").value.trim(),
+      scores
+    });
+    closeDrawer(); renderBoard(); renderWhoAmI();
+  });
+}
+
+/* ---------- coach: add member ---------- */
+function addMemberForm(){
+  openDrawer(`
+    <h2 style="font-size:1.8rem;margin-bottom:18px">Add member</h2>
+    <form id="memForm">
+      <div class="field"><label class="f">Full name</label><input type="text" id="amName" required></div>
+      <div class="fieldrow">
+        <div class="field"><label class="f">School</label>
+          <select id="amSchool"><option>UTSA</option><option>UT Austin</option></select></div>
+        <div class="field"><label class="f">Grad year</label><input type="number" id="amGrad" min="2026" max="2035" value="2029"></div>
+      </div>
+      <div class="fieldrow">
+        <div class="field"><label class="f">Cohort</label><input type="text" id="amCohort" placeholder="Spring 2027"></div>
+        <div class="field"><label class="f">Track</label><input type="text" id="amTrack" placeholder="Transfer &rarr; UT"></div>
+      </div>
+      <div class="field"><label class="f">Note</label><textarea id="amNote"></textarea></div>
+      <div class="flex">
+        <button class="btn btn-primary" type="submit">Add</button>
+        <button class="btn btn-outline" type="button" id="amCancel">Cancel</button>
+      </div>
+    </form>`);
+  document.getElementById("amCancel").addEventListener("click",closeDrawer);
+  document.getElementById("memForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const nm=document.getElementById("amName").value.trim();
+    if(!nm){ document.getElementById("amName").focus(); return; }
+    DB.addParticipant({
+      name:nm,
+      school:document.getElementById("amSchool").value,
+      gradYear:Number(document.getElementById("amGrad").value),
+      cohort:document.getElementById("amCohort").value.trim(),
+      track:document.getElementById("amTrack").value.trim(),
+      note:document.getElementById("amNote").value.trim(),
+      joined:new Date().toISOString().slice(0,10)
+    });
+    closeDrawer(); renderBoard(); renderWhoAmI();
+  });
+}
+
+/* Downloads are blocked in sandboxed previews (they work on GitHub Pages).
+   Always offer a copyable copy of the same JSON as a fallback. */
+function showExportFallback(){
+  const payload={
+    _comment:"ACG IBA roster + mock log. Commit this file to data/roster.json in the GitHub repo.",
+    _exportedAt:new Date().toISOString(),
+    participants:DB.participants, mocks:DB.mocks
+  };
+  openDrawer(`
+    <h2 style="font-size:1.7rem;margin-bottom:8px">Export roster.json</h2>
+    <p class="small">A download should have started. If it didn't, because some embedded
+    previews block downloads, copy the JSON below and paste it over
+    <span class="mono">data/roster.json</span> in the repo.</p>
+    <button class="btn btn-primary btn-sm" id="cpBtn" style="margin:12px 0">Copy JSON</button>
+    <textarea id="cpArea" style="min-height:300px;font-family:var(--mono);font-size:.76rem">${
+      esc(JSON.stringify(payload,null,2))}</textarea>`);
+  document.getElementById("cpBtn").addEventListener("click",async ev=>{
+    const ta=document.getElementById("cpArea");
+    try{ await navigator.clipboard.writeText(ta.value); ev.target.textContent="Copied"; }
+    catch(e){ ta.select(); ev.target.textContent="Press Cmd/Ctrl+C"; }
+  });
+}
+
+function wireControls(){
+  document.getElementById("search").addEventListener("input",renderBoard);
+  document.getElementById("cohortFilter").addEventListener("change",renderBoard);
+  const lm=document.getElementById("btnLogMock");
+  if(lm){
+    lm.addEventListener("click",()=>logMockForm());
+    document.getElementById("btnAddMember").addEventListener("click",addMemberForm);
+    const bc=document.getElementById("btnClear");
+    bc.addEventListener("click",()=>{
+      if(bc.dataset.armed){
+        DB.clearAll(); buildCohortFilter(); renderBoard(); renderWhoAmI();
+        bc.textContent="Clear all"; delete bc.dataset.armed;
+        bc.style.borderColor=""; bc.style.color="";
+      }else{
+        bc.dataset.armed="1";
+        bc.textContent="Click again to wipe every member";
+        bc.style.borderColor="var(--bad)"; bc.style.color="var(--bad)";
+        setTimeout(()=>{ if(bc.isConnected){ delete bc.dataset.armed;
+          bc.textContent="Clear all"; bc.style.borderColor=""; bc.style.color=""; } },4000);
+      }
+    });
+
+    document.getElementById("btnExport").addEventListener("click",()=>{
+      try{ DB.exportJSON(); }catch(e){ showExportFallback(); return; }
+      // Sandboxed previews silently block downloads; offer the copy path alongside.
+      setTimeout(showExportFallback,350);
+    });
+  }
+}
+</script>
+<script>
+/* Render the rating model straight from MODEL so the page can never drift from the engine. */
+document.addEventListener("DOMContentLoaded",()=>{
+  const host=document.getElementById("modelCards");
+  host.innerHTML=Object.entries(MODEL).map(([k,p])=>{
+    const total=Object.values(p.subs).reduce((a,s)=>a+s.weight,0);
+    const rows=Object.values(p.subs).map(s=>
+      `<div class="metricrow"><span class="mname">${s.label}</span><span class="mval">${Math.round(s.weight/total*1000)/10}%</span><span></span></div>`
+    ).join("");
+    const flag = total!==100 ? `<p class="small" style="margin:10px 0 0;color:var(--accent-ink)">Sub-weights sum to ${total}%, normalised.</p>` : "";
+    return `<div class="card">
+      <div class="pillarhead" style="margin-top:0">
+        <h4>${p.label}</h4><span class="pv">${p.weight}%</span>
+      </div>
+      ${rows}${flag}
+    </div>`;
+  }).join("");
+});
+</script>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <span class="mark">AI</span>
+          <span><b style="color:#fff">ACG&nbsp;IBA</b><span style="color:rgba(255,255,255,.4)">UTSA &rarr; UT &rarr; Banking</span></span>
+        </div>
+        <p style="max-width:40ch;margin:0">A coached preparation program, not a r&eacute;sum&eacute; line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <a href="index.html">Home</a>
+        <a href="apply.html">Apply</a>
+        <a href="roster.html">Roster &amp; Ratings</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="coursework.html">Coursework</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:ben.lavie@utexas.edu">ben.lavie@utexas.edu</a>
+        <a href="https://www.linkedin.com/in/andrew-q-vu/" target="_blank" rel="noopener">Andrew Vu on LinkedIn</a>
+        <a href="https://www.linkedin.com/in/ben-lavie-a96319313/" target="_blank" rel="noopener">Ben Lavie on LinkedIn</a>
+      </div>
+    </div>
+    <div class="base">
+      <span>&copy; <span id="yr"></span> ACG IBA. Student organization.</span>
+      <span>Not affiliated with or endorsed by any employer listed.</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
+</body></html>

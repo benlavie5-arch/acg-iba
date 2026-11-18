@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coursework | ACG IBA</title>
+<meta name="description" content="ACG IBA is a coached preparation program, not a resume line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move. Members work through technical and behavioral mocks and are scored after every session.">
+
+<meta name="theme-color" content="#0A1628">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230A1628%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-family=%27Georgia,serif%27 font-size=%2715%27 fill=%27white%27 text-anchor=%27middle%27%3EAI%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ACG IBA">
+<meta property="og:title" content="Coursework | ACG IBA">
+<meta property="og:description" content="ACG IBA is a coached preparation program, not a resume line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move. Members work through technical and behavioral mocks and are scored after every session.">
+<meta property="og:image" content="img/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Once the site has a real URL, change og:image to the full absolute
+     address (https://yoursite/img/og-cover.png) and add og:url.
+     Relative og: paths are not resolved by most link previewers. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">AI</span>
+      <span><b>ACG&nbsp;IBA</b><span>UTSA &rarr; UT &rarr; Banking</span></span>
+    </a>
+    <button class="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav class="main" id="mainnav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="apply.html">Apply</a>
+      <a href="roster.html">Roster &amp; Ratings <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+      <a href="timeline.html">Timeline <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+      <a href="coursework.html">Coursework <span class="lk" aria-hidden="true">&#9679;</span><span class="vh"> (access code required)</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="tight" style="padding-top:40px">
+  <div class="wrap">
+    <p class="eyebrow">Member portal</p>
+    <h1 style="font-size:clamp(2rem,4.4vw,3rem)">Coursework</h1>
+    <p class="lede">Study materials for every rated competency, plus the coursework and drills that build it. Open a deck and read it through.</p>
+    <div class="whoami" id="whoami"></div>
+  </div>
+</section>
+
+<section class="tight" style="padding-top:8px">
+  <div class="wrap">
+    <div class="flex" style="gap:18px">
+      <span class="pill" id="matCount"></span>
+      <span class="small">Weights shown are each competency's share of its pillar, so they tell you where study time has the most leverage.</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:36px">
+  <div class="wrap">
+    <div id="mapHost"></div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="eyebrow">Sequencing</p>
+        <h2>Order matters more than volume.</h2>
+      </div>
+      <div>
+        <p>Accounting is the heaviest-weighted technical competency because everything else depends on it. You cannot build a credible DCF without understanding how the statements connect, and you cannot defend an LBO without understanding debt schedules.</p>
+        <p class="mb0">So the sequence is fixed: accounting, then valuation fundamentals, then DCF, then enterprise value mechanics, then M&amp;A and LBO. Markets runs in parallel the whole way. It is a habit, not a unit.</p>
+      </div>
+    </div>
+    <div class="grid g4 mt32">
+      <div class="card"><span class="num">01</span><h3>Accounting</h3><p>Three statements, how they link, working capital, D&amp;A, deferred taxes.</p></div>
+      <div class="card"><span class="num">02</span><h3>Valuation core</h3><p>Comps, precedents, EV vs equity value, the bridge between them.</p></div>
+      <div class="card"><span class="num">03</span><h3>DCF</h3><p>Unlevered FCF, WACC, terminal value, sensitivity.</p></div>
+      <div class="card"><span class="num">04</span><h3>Transactions</h3><p>LBO mechanics and returns; M&amp;A accretion / dilution.</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Coursework and drills per competency. Study materials are loaded separately
+   from data/materials.json so decks can be added without touching this file. */
+const STUDY = {
+  accounting:{course:"Financial Accounting",drills:"Three-statement linkage drills; walk 'depreciation increases by $10' end to end; working capital effects on cash flow."},
+  corpfin:{course:"Business Finance / Corporate Finance",drills:"Cost of capital, capital structure, NPV vs IRR, dividend and buyback effects."},
+  bonds:{course:"Fixed Income / Debt Markets",drills:"Price-yield relationship, duration, credit spreads, why rates move debt pricing."},
+  lbo:{course:"Self-study + modeling sessions",drills:"Paper LBO under five minutes; sources and uses; debt paydown and returns attribution."},
+  mna:{course:"Mergers &amp; Acquisitions",drills:"Accretion / dilution math; cash vs stock consideration; synergies and purchase accounting."},
+  dcf:{course:"Valuation",drills:"Build an unlevered FCF bridge from EBITDA; WACC from scratch; terminal value both methods."},
+  ev:{course:"Covered in valuation coursework",drills:"EV to equity value bridge in both directions; which multiples pair with which metric and why."},
+  valuation:{course:"Valuation",drills:"Comps set construction and defence; football field; when each method misleads."},
+  speaking:{course:"Business Communication",drills:"Record yourself; 90-second 'walk me through your r\u00e9sum\u00e9'; eliminate filler words."},
+  stories:{course:"Coached behavioral mocks",drills:"Three stories covering leadership, failure and teamwork; one 'why banking' that survives three follow-ups."},
+  market:{course:"Investments / Portfolio Theory",drills:"Daily market reading; one defensible stock pitch; know where rates, indices and oil sit today."}
+};
+
+let MATERIALS = {};
+
+document.addEventListener("DOMContentLoaded",()=>{
+  requireAccess(async role=>{
+    const badge = role==="coach"?'<span class="pill coach">Coach access</span>':'<span class="pill">Member access</span>';
+    document.getElementById("whoami").innerHTML = badge +
+      ' <button type="button" id="signout" class="linklike">Sign out</button>';
+    document.getElementById("signout").addEventListener("click",signOut);
+
+    try{
+      const r=await fetch("data/materials.json",{cache:"no-store"});
+      if(r.ok) MATERIALS=(await r.json()).materials||{};
+    }catch(e){ console.warn("[acgiba] materials.json unreachable:",e.message); }
+
+    renderMap();
+  });
+});
+
+function materialLinks(key){
+  const list = MATERIALS[key]||[];
+  if(!list.length){
+    return '<p class="small" style="margin:12px 0 0;color:var(--muted-light)">No materials posted yet.</p>';
+  }
+  return '<div style="margin-top:14px">' + list.map(m=>{
+    /* only allow site-relative paths, so a bad entry cannot inject a link */
+    const safe = /^(files|assets|data)\//.test(m.file||"") ? m.file : "";
+    const meta = [m.kind, m.pages?m.pages+" pages":""].filter(Boolean).map(esc).join(" &middot; ");
+    const inner = `<b>${esc(m.title)||"Untitled"}</b>`
+      + (meta?`<span class="small" style="display:block;color:var(--muted)">${meta}</span>`:"")
+      + (m.note?`<span class="small" style="display:block;color:var(--muted)">${esc(m.note)}</span>`:"");
+    return safe
+      ? `<a class="matlink" href="${esc(safe)}" target="_blank" rel="noopener">
+           <span class="maticon" aria-hidden="true">PDF</span><span>${inner}</span></a>`
+      : `<div class="matlink" style="opacity:.5">
+           <span class="maticon" aria-hidden="true">PDF</span><span>${inner}</span></div>`;
+  }).join("") + '</div>';
+}
+
+function renderMap(){
+  let total=0;
+  document.getElementById("mapHost").innerHTML=Object.entries(MODEL).map(([pk,p])=>{
+    const sum=Object.values(p.subs).reduce((a,s)=>a+s.weight,0);
+    const cards=Object.entries(p.subs).map(([k,s])=>{
+      const st=STUDY[k]||{course:"",drills:""};
+      total += (MATERIALS[k]||[]).length;
+      return `<div class="card">
+        <div class="flex between" style="align-items:baseline;margin-bottom:9px">
+          <h3 style="margin:0">${s.label}</h3>
+          <span class="pill">${Math.round(s.weight/sum*1000)/10}% of pillar</span>
+        </div>
+        <p class="small" style="margin:0 0 4px"><b>Coursework</b></p>
+        <p style="font-size:.92rem;margin:0 0 12px">${st.course}</p>
+        <p class="small" style="margin:0 0 4px"><b>Drills</b></p>
+        <p style="font-size:.92rem;margin:0;color:var(--muted)">${st.drills}</p>
+        ${materialLinks(k)}
+      </div>`;
+    }).join("");
+    return `<div style="margin-bottom:46px">
+      <div class="pillarhead"><h4>${p.label} <span class="pw">${p.weight}% of overall</span></h4></div>
+      <div class="grid g3" style="margin-top:20px">${cards}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("matCount").textContent =
+    total===0 ? "No materials posted yet" :
+    total+" material"+(total===1?"":"s")+" posted";
+}
+</script>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <span class="mark">AI</span>
+          <span><b style="color:#fff">ACG&nbsp;IBA</b><span style="color:rgba(255,255,255,.4)">UTSA &rarr; UT &rarr; Banking</span></span>
+        </div>
+        <p style="max-width:40ch;margin:0">A coached preparation program, not a r&eacute;sum&eacute; line. We recruit UTSA freshmen who intend to transfer to UT Austin, and every coach has already made that exact move.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <a href="index.html">Home</a>
+        <a href="apply.html">Apply</a>
+        <a href="roster.html">Roster &amp; Ratings</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="coursework.html">Coursework</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:ben.lavie@utexas.edu">ben.lavie@utexas.edu</a>
+        <a href="https://www.linkedin.com/in/andrew-q-vu/" target="_blank" rel="noopener">Andrew Vu on LinkedIn</a>
+        <a href="https://www.linkedin.com/in/ben-lavie-a96319313/" target="_blank" rel="noopener">Ben Lavie on LinkedIn</a>
+      </div>
+    </div>
+    <div class="base">
+      <span>&copy; <span id="yr"></span> ACG IBA. Student organization.</span>
+      <span>Not affiliated with or endorsed by any employer listed.</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+<script>document.getElementById("yr").textContent=new Date().getFullYear();</script>
+</body></html>

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# The member pages carry a browser-side access code, which search engines
+# ignore. Keeping them out of the index is a courtesy, not protection:
+# the files remain publicly fetchable by direct URL.
+Disallow: /roster.html
+Disallow: /timeline.html
+Disallow: /coursework.html
+Disallow: /data/
+Disallow: /files/

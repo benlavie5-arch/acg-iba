@@ -1,0 +1,31 @@
+{
+  "_comment": "Study materials shown on coursework.html. Add a PDF to files/ then add an entry here under the matching competency key. Keys must match the MODEL keys in assets/app.js: accounting, corpfin, bonds, lbo, mna, dcf, ev, valuation, speaking, stories, market. A competency with an empty array shows as 'materials coming'.",
+  "_entry_schema": {
+    "title": "What members see, e.g. 'Three-statement linkage'",
+    "file": "files/accounting-basics.pdf  (path relative to the site root)",
+    "kind": "Slides | Guide | Worksheet | Reading",
+    "note": "optional one-line description",
+    "pages": "optional number"
+  },
+  "materials": {
+    "accounting": [
+      {
+        "title": "Accounting",
+        "file": "files/acg-iba-accounting.pdf",
+        "kind": "Slides",
+        "note": "Full module in twelve sections: standards and oversight, all four statements, revenue recognition, inventory costing, capitalise vs expense, deferred taxes, leases, EPS dilution, working capital and the cash cycle, seven walkthroughs, earnings-quality red flags and interview traps.",
+        "pages": 41
+      }
+    ],
+    "corpfin": [],
+    "bonds": [],
+    "lbo": [],
+    "mna": [],
+    "dcf": [],
+    "ev": [],
+    "valuation": [],
+    "speaking": [],
+    "stories": [],
+    "market": []
+  }
+}
