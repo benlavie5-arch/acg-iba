@@ -4,6 +4,400 @@
     "participants": "id, name, cohort, school, gradYear, track, joined, note",
     "mocks": "id, participantId, date (YYYY-MM-DD), coach, type, notes, scores{ metricKey: 1-10 } - include ONLY the metrics that mock actually covered"
   },
-  "participants": [],
-  "mocks": []
+  "participants": [
+    {
+      "id": "p_yahil",
+      "name": "Yahil",
+      "school": "",
+      "cohort": "",
+      "gradYear": null,
+      "track": "",
+      "note": "Surname and details to be filled in.",
+      "joined": "2026-11-20"
+    },
+    {
+      "id": "p_abraham",
+      "name": "Abraham",
+      "school": "",
+      "cohort": "",
+      "gradYear": null,
+      "track": "",
+      "note": "Surname and details to be filled in.",
+      "joined": "2026-11-22"
+    }
+  ],
+  "mocks": [
+    {
+      "id": "m_yahil_01",
+      "participantId": "p_yahil",
+      "date": "2026-11-20",
+      "coach": "Ben Lavie",
+      "type": "Full mock",
+      "notes": "Accounting is the gap: 2.5 across seven questions, including zeros on accrual vs cash and principal and interest. Strong on markets. Behavioral rests on two brainteaser attempts and one pressure test, so it is thin evidence. Not tested: LBO, enterprise value, valuation, prep and stories.",
+      "answers": [
+        {
+          "questionId": "q23",
+          "text": "What's a DCF?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 10
+        },
+        {
+          "questionId": "q01",
+          "text": "Walk me through the income statement",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q03",
+          "text": "What's the cash flow statement?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 2.5
+        },
+        {
+          "questionId": "q154",
+          "text": "Why do companies acquire other companies?",
+          "competency": "mna",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q16",
+          "text": "What's the formula for present value?",
+          "competency": "corpfin",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q17",
+          "text": "What's net present value?",
+          "competency": "corpfin",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q34",
+          "text": "What's the difference between a bond and a loan?",
+          "competency": "bonds",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q21",
+          "text": "What's beta?",
+          "competency": "corpfin",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q205",
+          "text": "Brainteaser: 100 balls, 2 buckets.",
+          "competency": "speaking",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q46",
+          "text": "Pressure test: convince me you didn't do it",
+          "competency": "speaking",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q05",
+          "text": "Which statement is most important, and why?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q48",
+          "text": "What's Bloomberg?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q49",
+          "text": "What's the current Fed rate?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q51",
+          "text": "CPI or PCE - which matters more, and why?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q52",
+          "text": "Conference Board or Michigan - which is more accurate?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q53",
+          "text": "What's going on in the market?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q11",
+          "text": "What's depreciation?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q12",
+          "text": "What's a residual?",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q09",
+          "text": "What are accounts receivable?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q10",
+          "text": "Accrual basis vs cash basis",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q22",
+          "text": "What's principal and interest?",
+          "competency": "corpfin",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q205",
+          "text": "Brainteaser: 100 balls, 2 buckets. (second attempt)",
+          "competency": "speaking",
+          "difficulty": "M",
+          "score": 2.5
+        }
+      ],
+      "loggedAt": "2026-11-22T21:13:00Z"
+    },
+    {
+      "id": "m_abraham_01",
+      "participantId": "p_abraham",
+      "date": "2026-11-22",
+      "coach": "Ben Lavie",
+      "type": "Full mock",
+      "notes": "DCF is the gap: six questions, four zeros, and he scored 0 on the discount rate while scoring on WACC - same thing under a different name. Accounting fundamentals are solid. Opening three-statement walk-through was weak, which matters because it sets the tone. Used a profanity (would have been a 2 point deduction under the old scale; band scoring has no partial deductions, noting it here instead). Tends to over-answer on technicals and under-answer on the market question. Not tested: bonds, LBO, M&A, valuation.",
+      "answers": [
+        {
+          "questionId": "q01",
+          "text": "Walk me through the income statement",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q02",
+          "text": "Walk me through the three statements",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q05",
+          "text": "Which statement is most important, and why?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q06",
+          "text": "What's the problem with the balance sheet?",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q23",
+          "text": "What's a DCF?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q24",
+          "text": "What's unlevered free cash flow?",
+          "competency": "dcf",
+          "difficulty": "M",
+          "score": 2.5
+        },
+        {
+          "questionId": "q25",
+          "text": "What's the discount rate?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q18",
+          "text": "How do you calculate WACC?",
+          "competency": "corpfin",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q19",
+          "text": "Why (1 - tax rate), and why on debt?",
+          "competency": "corpfin",
+          "difficulty": "H",
+          "score": 2.5
+        },
+        {
+          "questionId": "q20",
+          "text": "Why is cost of debt below cost of equity?",
+          "competency": "corpfin",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q28",
+          "text": "Why use Gordon Growth over an exit multiple?",
+          "competency": "dcf",
+          "difficulty": "H",
+          "score": 0
+        },
+        {
+          "questionId": "q27",
+          "text": "What's the Gordon Growth model?",
+          "competency": "dcf",
+          "difficulty": "H",
+          "score": 0
+        },
+        {
+          "questionId": "q26",
+          "text": "What's a perpetuity?",
+          "competency": "dcf",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q30",
+          "text": "Bridge equity value to enterprise value",
+          "competency": "ev",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q31",
+          "text": "Why do you add non-controlling interest?",
+          "competency": "ev",
+          "difficulty": "H",
+          "score": 0
+        },
+        {
+          "questionId": "q33",
+          "text": "What's preferred stock?",
+          "competency": "ev",
+          "difficulty": "M",
+          "score": 2.5
+        },
+        {
+          "questionId": "q07",
+          "text": "How do the three statements connect?",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 7.5
+        },
+        {
+          "questionId": "q08",
+          "text": "Give me five more ways they connect",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q42",
+          "text": "Tell me about yourself",
+          "competency": "stories",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q48",
+          "text": "What's Bloomberg?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 10
+        },
+        {
+          "questionId": "q51",
+          "text": "CPI or PCE - which matters more, and why?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q50",
+          "text": "What's CPI, and what was the last report?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q52",
+          "text": "Conference Board or Michigan - which is more accurate?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q53",
+          "text": "What's going on in the market?",
+          "competency": "market",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q206",
+          "text": "Brainteaser: the 3 jars problem.",
+          "competency": "speaking",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q46",
+          "text": "Pressure test: convince me you didn't do it",
+          "competency": "speaking",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q09",
+          "text": "What are accounts receivable?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q10",
+          "text": "Accrual basis vs cash basis",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 7.5
+        }
+      ],
+      "loggedAt": "2026-11-22T21:13:00Z"
+    }
+  ]
 }
