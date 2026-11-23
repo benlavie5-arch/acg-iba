@@ -91,6 +91,46 @@ total exactly 100, so no normalisation is in play).
 
 **Behavioral:** speaking 50 / stories & prep 50 = 100 ✓
 
+### Scoring rules
+
+**Rule 1 - five scores exist, nothing in between.** Every answer gets one of:
+
+| Score | Means |
+| --- | --- |
+| 0 | Didn't know it |
+| 2.5 | Knew the term, couldn't explain it |
+| 5 | Correct but incomplete, or needed prompting |
+| 7.5 | Complete and correct |
+| 10 | Complete, correct, explained why - unprompted |
+
+Removing the values in between is what makes two coaches agree. Nobody can
+reliably defend a 6 over a 7.
+
+**Rule 2 - difficulty weights the answer, asymmetrically.** Every question in
+`data/questions.json` is tagged E, M or H. How much it pulls on the average
+depends on whether the answer was above or below neutral:
+
+| Difficulty | Answered above 5 | Answered below 5 |
+| --- | --- | --- |
+| Easy | 0.25x | 2.5x |
+| Medium | 0.75x | 1.5x |
+| Hard | 1x | 1x |
+
+Getting an easy question right barely moves the score. Missing one costs a lot.
+Hard questions are the baseline both ways. A score of exactly 5 weighs 1x.
+
+Behaviour this produces:
+
+| Candidate | Score |
+| --- | --- |
+| Aces an all-easy mock | 10 |
+| Solid everywhere (all 7.5s) | 7.5 |
+| Misses one easy, rest solid | 6.2 |
+| Aces easy, misses every hard | 3.3 |
+| Misses easy, aces hard | 1.7 |
+
+Change the numbers in `DIFFICULTY` in `assets/app.js` to retune.
+
 ### How a score is calculated
 
 - A mock scores only the competencies it actually tested. Untested competencies are excluded

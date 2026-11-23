@@ -139,7 +139,7 @@ let ROLE=null;
 document.addEventListener("DOMContentLoaded",()=>{
   requireAccess(async role=>{
     ROLE=role;
-    await DB.load();
+    await Promise.all([DB.load(), BANK.load()]);
     document.getElementById("decayTxt").textContent=DECAY;
     renderWhoAmI(); buildCohortFilter(); renderBoard();
     if(role==="coach") document.getElementById("coachTools").style.display="flex";
@@ -251,14 +251,14 @@ function openProfile(id){
   }).join("");
 
   const history=mocks.length? mocks.map(m=>{
-    const covered=Object.keys(m.scores||{}).length;
+    const covered=(m.answers||[]).length||Object.keys(m.scores||{}).length;
     const del = ROLE==="coach" ? `<button class="btn btn-outline btn-sm" data-del="${m.id}" style="margin-top:9px">Delete</button>`:"";
     return `<div class="card" style="padding:17px;margin-bottom:11px">
       <div class="flex between" style="margin-bottom:7px">
         <b style="font-size:.93rem">${esc(m.type)||"Mock"}</b>
         <span class="small">${fmtDate(m.date)}</span>
       </div>
-      <p class="small" style="margin:0 0 7px">Coach: ${esc(m.coach)||"n/a"} &middot; ${covered} competenc${covered===1?"y":"ies"} scored</p>
+      <p class="small" style="margin:0 0 7px">Coach: ${esc(m.coach)||"n/a"}${mixLabel(m)?" &middot; "+esc(mixLabel(m)):""}</p>
       ${m.notes?`<p style="font-size:.9rem;margin:0;color:var(--muted)">${esc(m.notes)}</p>`:""}
       ${del}
     </div>`;
@@ -326,22 +326,26 @@ function openProfile(id){
 }
 
 /* ---------- coach: log a mock ---------- */
+/* Questions come from the bank, so competency and difficulty are attached
+   rather than decided while grading. Scores are five fixed bands. */
+let PICKED = [];
+
 function logMockForm(preselect){
+  PICKED = [];
   const opts=DB.participants.map(p=>`<option value="${esc(p.id)}" ${p.id===preselect?"selected":""}>${esc(p.name)}</option>`).join("");
-  const groups=Object.entries(MODEL).map(([pk,p])=>{
-    const items=Object.entries(p.subs).map(([k,s])=>`
-      <div class="scoreitem off" data-item="${k}">
-        <input type="checkbox" id="chk_${k}" data-chk="${k}">
-        <label for="chk_${k}">${s.label}</label>
-        <input type="number" min="1" max="10" step="0.5" id="val_${k}" data-val="${k}" disabled placeholder="&ndash;">
-      </div>`).join("");
-    return `<p class="eyebrow" style="margin:22px 0 9px">${p.label}</p><div class="scoregrid">${items}</div>`;
-  }).join("");
+  const byComp=BANK.byCompetency();
+  const picker=Object.entries(MODEL).map(([pk,p])=>
+    Object.keys(p.subs).filter(k=>byComp[k]&&byComp[k].length).map(k=>`
+      <details class="qgroup">
+        <summary>${p.subs[k].label} <span class="small">(${byComp[k].length})</span></summary>
+        ${byComp[k].map(q=>`<button type="button" class="qadd" data-q="${esc(q.id)}">
+            <span class="dchip d${q.difficulty}">${q.difficulty}</span>${esc(q.text)}</button>`).join("")}
+      </details>`).join("")).join("");
 
   openDrawer(`
     <h2 style="font-size:1.8rem;margin-bottom:6px">Log a mock</h2>
-    <p class="small">Tick only the competencies this session actually tested. Untested ones stay out of the calculation entirely.</p>
-    <form id="mockForm" style="margin-top:22px">
+    <p class="small">Pick the questions you asked, then score each one. Difficulty and competency come from the bank.</p>
+    <form id="mockForm" style="margin-top:20px">
       <div class="field"><label class="f">Member</label><select id="mkParticipant">${opts}</select></div>
       <div class="fieldrow">
         <div class="field"><label class="f">Date</label><input type="date" id="mkDate" value="${new Date().toISOString().slice(0,10)}"></div>
@@ -349,60 +353,91 @@ function logMockForm(preselect){
           <select id="mkCoach"><option>Andrew Vu</option><option>Ben Lavie</option></select></div>
       </div>
       <div class="field"><label class="f">Mock type</label>
-        <select id="mkType">
-          <option>Full mock</option><option>Technical screen</option>
-          <option>Behavioral</option><option>Markets / stock pitch</option><option>Superday sim</option>
-        </select></div>
-      ${groups}
+        <select id="mkType"><option>Full mock</option><option>Technical screen</option>
+          <option>Behavioral</option><option>Markets / stock pitch</option><option>Superday sim</option></select></div>
+
+      <label class="f" style="margin-top:20px">Add questions</label>
+      <div class="qpicker">${picker||'<p class="small">Question bank not loaded.</p>'}</div>
+
+      <div class="flex between" style="margin:22px 0 8px">
+        <label class="f" style="margin:0">Scoring</label>
+        <span class="pill" id="mkMix">no questions yet</span>
+      </div>
+      <div id="mkScored"><p class="small" style="color:var(--muted-light)">Pick a question above to start.</p></div>
+
       <div class="field" style="margin-top:22px"><label class="f">Notes</label>
         <textarea id="mkNotes" placeholder="What went well, what to drill before the next session."></textarea></div>
       <div class="flex" style="margin-top:8px">
         <button class="btn btn-primary" type="submit">Save mock</button>
         <button class="btn btn-outline" type="button" id="mkCancel">Cancel</button>
       </div>
-      <p class="small" style="margin-top:14px">Saves to this browser. Use <b>Export roster.json</b> and commit the file so the whole cohort sees it.</p>
-    </form>
-  `);
+      <p class="small" style="margin-top:14px">Saves to this browser. Use <b>Export roster.json</b> and commit so the cohort sees it.</p>
+    </form>`);
 
-  document.querySelectorAll("[data-chk]").forEach(c=>c.addEventListener("change",()=>{
-    const k=c.dataset.chk;
-    const v=document.querySelector(`[data-val="${k}"]`);
-    const item=document.querySelector(`[data-item="${k}"]`);
-    v.disabled=!c.checked; item.classList.toggle("off",!c.checked);
-    if(c.checked){ if(!v.value) v.value=7; v.focus(); } else v.value="";
+  document.querySelectorAll(".qadd").forEach(b=>b.addEventListener("click",()=>{
+    const q=BANK.get(b.dataset.q);
+    if(!q || PICKED.some(p=>p.id===q.id)) return;
+    PICKED.push({id:q.id,text:q.text,competency:q.competency,difficulty:q.difficulty,score:null});
+    renderScored();
   }));
-
   document.getElementById("mkCancel").addEventListener("click",closeDrawer);
-  document.getElementById("mockForm").addEventListener("submit",e=>{
-    e.preventDefault();
-    const scores={};
-    document.querySelectorAll("[data-chk]").forEach(c=>{
-      if(c.checked){
-        const v=document.querySelector(`[data-val="${c.dataset.chk}"]`).value;
-        if(v!==""){
-          const n=clampScore(v);
-          if(n!==null) scores[c.dataset.chk]=n;
-        }
-      }
-    });
-    if(!Object.keys(scores).length){
-      let w=document.getElementById("mkWarn");
-      if(!w){ w=document.createElement("div"); w.id="mkWarn"; w.className="note";
-              w.style.marginTop="12px"; document.getElementById("mockForm").appendChild(w); }
-      w.innerHTML="<b>Nothing scored.</b> Tick at least one competency this mock tested.";
-      w.scrollIntoView({behavior:"smooth",block:"center"});
-      return;
-    }
-    DB.addMock({
-      participantId:document.getElementById("mkParticipant").value,
-      date:document.getElementById("mkDate").value,
-      coach:document.getElementById("mkCoach").value,
-      type:document.getElementById("mkType").value,
-      notes:document.getElementById("mkNotes").value.trim(),
-      scores
-    });
-    closeDrawer(); renderBoard(); renderWhoAmI();
+  document.getElementById("mockForm").addEventListener("submit",saveMock);
+}
+
+function renderScored(){
+  const host=document.getElementById("mkScored");
+  if(!PICKED.length){
+    host.innerHTML='<p class="small" style="color:var(--muted-light)">Pick a question above to start.</p>';
+  }else{
+    host.innerHTML=PICKED.map((p,i)=>`
+      <div class="scoreq">
+        <div class="flex between" style="align-items:flex-start;gap:10px">
+          <span><span class="dchip d${p.difficulty}">${p.difficulty}</span><b>${esc(p.text)}</b></span>
+          <button type="button" class="linklike" data-rm="${i}">remove</button>
+        </div>
+        <div class="bandrow">
+          ${BANDS.map(b=>`
+            <label class="band ${p.score===b.value?"on":""}" title="${esc(b.label)}">
+              <input type="radio" name="q${i}" value="${b.value}" data-idx="${i}" ${p.score===b.value?"checked":""}>
+              <b>${b.value}</b><span>${esc(b.label)}</span>
+            </label>`).join("")}
+        </div>
+      </div>`).join("");
+    host.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener("change",()=>{
+      PICKED[Number(r.dataset.idx)].score=Number(r.value); renderScored();
+    }));
+    host.querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click",()=>{
+      PICKED.splice(Number(b.dataset.rm),1); renderScored();
+    }));
+  }
+  const mix={E:0,M:0,H:0}; PICKED.forEach(p=>mix[p.difficulty]++);
+  const scored=PICKED.filter(p=>p.score!==null).length;
+  document.getElementById("mkMix").textContent = PICKED.length
+    ? `${mix.E} easy, ${mix.M} medium, ${mix.H} hard - ${scored}/${PICKED.length} scored`
+    : "no questions yet";
+}
+
+function saveMock(e){
+  e.preventDefault();
+  const answers=PICKED.filter(p=>p.score!==null)
+    .map(p=>({questionId:p.id,text:p.text,competency:p.competency,difficulty:p.difficulty,score:p.score}));
+  if(!answers.length){
+    let w=document.getElementById("mkWarn");
+    if(!w){ w=document.createElement("div"); w.id="mkWarn"; w.className="note";
+            w.style.marginTop="12px"; document.getElementById("mockForm").appendChild(w); }
+    w.innerHTML="<b>Nothing scored.</b> Add at least one question and give it a score.";
+    w.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+  DB.addMock({
+    participantId:document.getElementById("mkParticipant").value,
+    date:document.getElementById("mkDate").value,
+    coach:document.getElementById("mkCoach").value,
+    type:document.getElementById("mkType").value,
+    notes:document.getElementById("mkNotes").value.trim(),
+    answers
   });
+  closeDrawer(); renderBoard(); renderWhoAmI();
 }
 
 /* ---------- coach: add member ---------- */

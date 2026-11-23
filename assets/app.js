@@ -49,6 +49,34 @@ const MODEL = {
   }
 };
 
+/* --- Answer scale -------------------------------------------------------
+   Five scores exist. Nothing in between: removing 6-vs-7 arguments is what
+   makes two coaches agree.                                                 */
+const BANDS = [
+  { value: 0,   label: "Didn't know it" },
+  { value: 2.5, label: "Knew the term, couldn't explain it" },
+  { value: 5,   label: "Correct but incomplete, or needed prompting" },
+  { value: 7.5, label: "Complete and correct" },
+  { value: 10,  label: "Complete, correct, explained why - unprompted" }
+];
+
+/* --- Difficulty weights -------------------------------------------------
+   How much a question pulls on its competency average. Asymmetric on
+   purpose: getting an easy question right barely counts, missing one counts
+   heavily. Hard questions are the 1x baseline both ways.                   */
+const DIFFICULTY = {
+  E: { label:"Easy",   up:0.25, down:2.5 },
+  M: { label:"Medium", up:0.75, down:1.5 },
+  H: { label:"Hard",   up:1.0,  down:1.0 }
+};
+
+function answerWeight(score, difficulty){
+  const d = DIFFICULTY[difficulty] || DIFFICULTY.M;
+  if(score > 5) return d.up;
+  if(score < 5) return d.down;
+  return 1.0;                     // exactly 5 is neutral
+}
+
 /* --- Recency decay ------------------------------------------------------
    Each newer mock counts DECAY x as much as the one before it.
    2 = your spec. 1 = all mocks equal. 3 = even more recency-biased.      */
@@ -63,6 +91,24 @@ const DECAY = 2;
 const GATE_HASHES = {
   coach:  "c4ee3b815382f97703534f75def72e2876ff5f426ef44d099cd737b858ed577e",
   member: "2d61f14eef6f31844f4346ce11940e20208dd529ff993ef3af5054890dec7bc7"
+};
+
+/* Question bank, loaded once from data/questions.json. */
+const BANK = { questions: [], loaded:false,
+  async load(){
+    try{
+      const r = await fetch("data/questions.json",{cache:"no-store"});
+      if(r.ok){ this.questions = (await r.json()).questions || []; }
+    }catch(e){ console.warn("[acgiba] questions.json unreachable:", e.message); }
+    this.loaded = true;
+    return this;
+  },
+  byCompetency(){
+    const out={};
+    this.questions.forEach(q=>{ (out[q.competency] = out[q.competency]||[]).push(q); });
+    return out;
+  },
+  get(id){ return this.questions.find(q=>q.id===id); }
 };
 
 const STORAGE_KEY = "acgiba_data_v1";
@@ -213,12 +259,44 @@ function decayedMean(values){
   return num/den;
 }
 
+/* A mock's score for one competency.
+   New format: m.answers = [{questionId, competency, difficulty, score}].
+   Each answer is weighted by answerWeight, then averaged.
+   Old format (m.scores = {competency: number}) is still read, unweighted,
+   so mocks logged before the question bank existed keep working. */
+function mockCompetencyScore(mock, key){
+  if(Array.isArray(mock.answers)){
+    const rows = mock.answers.filter(a=>a.competency===key && a.score!=null && a.score!=="");
+    if(!rows.length) return null;
+    let num=0, den=0;
+    rows.forEach(a=>{
+      const w = answerWeight(Number(a.score), a.difficulty);
+      num += Number(a.score)*w; den += w;
+    });
+    return den ? num/den : null;
+  }
+  if(mock.scores && mock.scores[key]!=null && mock.scores[key]!=="")
+    return Number(mock.scores[key]);
+  return null;
+}
+
 function subScore(mocks, key){
-  const vals = mocks
-    .filter(m=>m.scores && m.scores[key]!=null && m.scores[key]!=="")
-    .map(m=>Number(m.scores[key]));
+  const vals = mocks.map(m=>mockCompetencyScore(m,key)).filter(v=>v!==null);
   const mean = decayedMean(vals);
   return { value: mean===null?null:round1(mean), n: vals.length };
+}
+
+/* Which difficulties a mock actually covered, for the coverage label. */
+function mockMix(mock){
+  const mix={E:0,M:0,H:0};
+  (mock.answers||[]).forEach(a=>{ if(mix[a.difficulty]!=null) mix[a.difficulty]++; });
+  return mix;
+}
+function mixLabel(mock){
+  const m=mockMix(mock), t=m.E+m.M+m.H;
+  if(!t) return "";
+  const parts=[]; if(m.E)parts.push(m.E+" easy"); if(m.M)parts.push(m.M+" medium"); if(m.H)parts.push(m.H+" hard");
+  return parts.join(", ");
 }
 
 function pillarScore(mocks, pillarKey){
