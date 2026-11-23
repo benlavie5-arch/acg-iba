@@ -3010,6 +3010,12 @@
       "text": "What's non-controlling interest?",
       "competency": "ev",
       "difficulty": "M"
+    },
+    {
+      "id": "q499",
+      "text": "Give me five more items that belong in the enterprise value bridge",
+      "competency": "ev",
+      "difficulty": "H"
     }
   ]
 }

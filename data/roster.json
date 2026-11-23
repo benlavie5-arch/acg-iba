@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 12,
+  "version": 13,
   "participants": [
     {
       "id": "p_yahil",
@@ -192,6 +192,20 @@
           "competency": "corpfin",
           "difficulty": "M",
           "score": 5
+        },
+        {
+          "questionId": "q30",
+          "text": "Bridge equity value to enterprise value",
+          "competency": "ev",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q499",
+          "text": "Give me five more items that belong in the enterprise value bridge",
+          "competency": "ev",
+          "difficulty": "H",
+          "score": 0
         }
       ],
       "loggedAt": "2026-11-22T21:13:00Z"
