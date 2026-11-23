@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 11,
+  "version": 12,
   "participants": [
     {
       "id": "p_yahil",
@@ -185,6 +185,13 @@
           "competency": "puzzles",
           "difficulty": "M",
           "score": 2.5
+        },
+        {
+          "questionId": "q18",
+          "text": "How do you calculate WACC?",
+          "competency": "corpfin",
+          "difficulty": "M",
+          "score": 5
         }
       ],
       "loggedAt": "2026-11-22T21:13:00Z"
