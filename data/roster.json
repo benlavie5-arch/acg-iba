@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 10,
+  "version": 11,
   "participants": [
     {
       "id": "p_yahil",
@@ -325,10 +325,17 @@
         },
         {
           "questionId": "q42",
-          "text": "Tell me about yourself",
+          "text": "Tell me about yourself (story)",
           "competency": "stories",
           "difficulty": "E",
           "score": 5
+        },
+        {
+          "questionId": "q42",
+          "text": "Tell me about yourself (delivery)",
+          "competency": "speaking",
+          "difficulty": "E",
+          "score": 7.5
         },
         {
           "questionId": "q48",
