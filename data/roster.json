@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 9,
+  "version": 10,
   "participants": [
     {
       "id": "p_yahil",
@@ -54,11 +54,11 @@
           "score": 2.5
         },
         {
-          "questionId": "q154",
-          "text": "Why do companies acquire other companies?",
+          "questionId": "q155",
+          "text": "What's the difference between a merger and an acquisition?",
           "competency": "mna",
           "difficulty": "M",
-          "score": 5
+          "score": 2.5
         },
         {
           "questionId": "q16",
