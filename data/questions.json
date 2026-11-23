@@ -1249,7 +1249,7 @@
     },
     {
       "id": "q205",
-      "text": "Brainteaser: 100 balls, 50 red and 50 blue, and two buckets. Distribute them to maximise the chance of drawing a red ball when a bucket is picked at random. What is that probability?",
+      "text": "Brainteaser: 100 balls, 50 white and 50 black, and two buckets. You choose how to split them. A bucket is then picked at random and one ball drawn. How do you split them to maximise the chance of drawing white, and what is that probability?",
       "competency": "puzzles",
       "difficulty": "M"
     },
