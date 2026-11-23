@@ -404,16 +404,19 @@ function buildLogFilter(){
 }
 
 /* One mock's own overall, so the log shows what that session produced
-   rather than the member's running rating. */
+   rather than the member's running rating.
+   Each competency and pillar is rounded to 1dp on the way up, exactly as
+   the profile does it - otherwise the log and the profile disagree by a
+   tenth on the same mock. */
 function mockOverall(mock){
   let num=0, den=0;
   for(const [pk,p] of Object.entries(MODEL)){
     let n=0, d=0;
     for(const [sk,sub] of Object.entries(p.subs)){
       const v=mockCompetencyScore(mock, sk);
-      if(v!==null){ n+=v*sub.weight; d+=sub.weight; }
+      if(v!==null){ n+=round1(v)*sub.weight; d+=sub.weight; }
     }
-    if(d){ num += (n/d)*p.weight; den += p.weight; }
+    if(d){ num += round1(n/d)*p.weight; den += p.weight; }
   }
   return den ? round1(num/den) : null;
 }
@@ -431,7 +434,10 @@ function renderLog(){
       const v=mockOverall(m);
       const mix=mockMix(m);
       const mixHtml = (mix.E+mix.M+mix.H)
-        ? `<span class="dchip dE">${mix.E}</span><span class="dchip dM">${mix.M}</span><span class="dchip dH">${mix.H}</span>`
+        ? `<span class="mixchips">`
+          + [["E",mix.E],["M",mix.M],["H",mix.H]].map(([k,v])=>
+              `<span class="dchip d${k} mixchip">${v}${k}</span>`).join("")
+          + `</span>`
         : '<span class="small" style="color:var(--muted-light)">n/a</span>';
       const warn = (mix.H===0 && (mix.E+mix.M)>0)
         ? ' <span class="pill" title="No hard questions asked, so this score is not comparable with a mock that included them">no hard</span>' : '';

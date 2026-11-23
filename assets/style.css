@@ -350,6 +350,8 @@ a[data-todo]{opacity:.5;cursor:not-allowed;text-decoration:line-through}
   display:inline-block;width:19px;height:19px;line-height:19px;text-align:center;border-radius:4px;
   font-size:.64rem;font-weight:700;margin-right:9px;vertical-align:1px;
 }
+.mixchips{display:inline-flex;gap:5px}
+.mixchip{width:auto;min-width:26px;padding:0 6px;font-size:.66rem;letter-spacing:.02em}
 .dE{background:#E8F5EE;color:#1F7A4D}
 .dM{background:#F9EEDA;color:#8A5D00}
 .dH{background:#FBECE9;color:#A33A2A}
