@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 13,
+  "version": 14,
   "participants": [
     {
       "id": "p_yahil",
@@ -219,15 +219,15 @@
       "notes": "DCF is the gap: six questions, four zeros, and he scored 0 on the discount rate while scoring on WACC - same thing under a different name. Accounting fundamentals are solid. Opening three-statement walk-through was weak, which matters because it sets the tone. Used a profanity (would have been a 2 point deduction under the old scale; band scoring has no partial deductions, noting it here instead). Tends to over-answer on technicals and under-answer on the market question. Not tested: bonds, LBO, M&A, valuation.",
       "answers": [
         {
-          "questionId": "q01",
-          "text": "Walk me through the income statement",
+          "questionId": "q500",
+          "text": "What's the income statement?",
           "competency": "accounting",
           "difficulty": "E",
           "score": 7.5
         },
         {
-          "questionId": "q02",
-          "text": "Walk me through the three statements",
+          "questionId": "q01",
+          "text": "Walk me through the income statement",
           "competency": "accounting",
           "difficulty": "E",
           "score": 0

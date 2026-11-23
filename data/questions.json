@@ -3016,6 +3016,12 @@
       "text": "Give me five more items that belong in the enterprise value bridge",
       "competency": "ev",
       "difficulty": "H"
+    },
+    {
+      "id": "q500",
+      "text": "What's the income statement?",
+      "competency": "accounting",
+      "difficulty": "E"
     }
   ]
 }
