@@ -36,8 +36,9 @@ const MODEL = {
     label: "Behavioral",
     weight: 40,
     subs: {
-      speaking:     { label:"Speaking / Delivery", weight:50 },
-      stories:      { label:"Prep & Stories",      weight:50 }
+      speaking:     { label:"Speaking / Delivery", weight:45 },
+      stories:      { label:"Prep & Stories",      weight:45 },
+      puzzles:      { label:"Puzzles / Brainteasers", weight:10 }
     }
   },
   market: {

@@ -94,7 +94,7 @@
         {
           "questionId": "q205",
           "text": "Brainteaser: 100 balls, 2 buckets.",
-          "competency": "speaking",
+          "competency": "puzzles",
           "difficulty": "M",
           "score": 0
         },
@@ -185,7 +185,7 @@
         {
           "questionId": "q205",
           "text": "Brainteaser: 100 balls, 2 buckets. (second attempt)",
-          "competency": "speaking",
+          "competency": "puzzles",
           "difficulty": "M",
           "score": 2.5
         }
@@ -371,7 +371,7 @@
         {
           "questionId": "q206",
           "text": "Brainteaser: the 3 jars problem.",
-          "competency": "speaking",
+          "competency": "puzzles",
           "difficulty": "M",
           "score": 0
         },

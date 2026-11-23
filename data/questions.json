@@ -1244,19 +1244,19 @@
     {
       "id": "q204",
       "text": "Brainteaser: how many golf balls fit in a school bus?",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
       "id": "q205",
       "text": "Brainteaser: 100 balls, 2 buckets.",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
       "id": "q206",
       "text": "Brainteaser: the 3 jars problem.",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
@@ -2798,25 +2798,25 @@
     {
       "id": "q463",
       "text": "Market sizing: how many coffees are sold in Austin each day?",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
       "id": "q464",
       "text": "Market sizing: what's the annual revenue of a single gas station?",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
       "id": "q465",
       "text": "Brainteaser: you have 8 balls, one is heavier. Two weighings. Find it.",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "M"
     },
     {
       "id": "q466",
       "text": "Brainteaser: two ropes, each burns in an hour unevenly. Measure 45 minutes.",
-      "competency": "speaking",
+      "competency": "puzzles",
       "difficulty": "H"
     },
     {

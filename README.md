@@ -247,6 +247,20 @@ distribute.
 
 ---
 
+## The mock log
+
+`roster.html` carries a log of every mock below the rankings: date, member, type,
+coach, the easy/medium/hard mix as coloured chips, question count, and that
+session's own result. A mock with no hard questions is flagged `no hard`, because
+its score is not comparable with one that included them. Filter by member, or
+click any row to open that member's profile.
+
+The log's Result column is the score that one session produced. The rankings
+above it show the member's running rating across all their mocks, with the
+newest weighted 2x.
+
+---
+
 ## Page layout note
 
 "How the program runs" and "The rating model" live on **roster.html** (behind the

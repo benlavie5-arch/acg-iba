@@ -125,6 +125,29 @@
   </div>
 </section>
 
+<section class="tight" style="padding-top:0">
+  <div class="wrap">
+    <div class="flex between" style="margin-bottom:16px">
+      <div>
+        <p class="eyebrow" style="margin-bottom:4px">Mock log</p>
+        <p class="small" style="margin:0">Every mock logged, newest first.</p>
+      </div>
+      <select id="logFilter" style="width:auto"><option value="">All members</option></select>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th style="width:110px">Date</th><th>Member</th><th class="hidesm">Type</th>
+          <th class="hidesm">Coach</th><th class="hidesm">Mix</th>
+          <th style="width:70px">Q</th><th style="width:80px">Result</th>
+        </tr></thead>
+        <tbody id="mocklog"></tbody>
+      </table>
+    </div>
+    <p class="small mt24" id="logNote"></p>
+  </div>
+</section>
+
 <section class="alt tight">
   <div class="wrap">
     <p class="eyebrow">Reading the numbers</p>
@@ -141,7 +164,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     ROLE=role;
     await Promise.all([DB.load(), BANK.load()]);
     document.getElementById("decayTxt").textContent=DECAY;
-    renderWhoAmI(); buildCohortFilter(); renderBoard();
+    renderWhoAmI(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog();
     if(role==="coach") document.getElementById("coachTools").style.display="flex";
     wireControls();
   });
@@ -302,7 +325,7 @@ function openProfile(id){
   if(dm) dm.addEventListener("click",()=>{
     if(dm.dataset.armed){
       const n=DB.deleteParticipant(dm.dataset.delmember);
-      closeDrawer(); buildCohortFilter(); renderBoard(); renderWhoAmI();
+      closeDrawer(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
     }else{
       dm.dataset.armed="1";
       dm.textContent="Click again to permanently delete";
@@ -314,7 +337,7 @@ function openProfile(id){
 
   document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
     if(b.dataset.armed){
-      DB.deleteMock(b.dataset.del); closeDrawer(); renderBoard(); renderWhoAmI();
+      DB.deleteMock(b.dataset.del); closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
     }else{
       b.dataset.armed="1";
       b.textContent="Click again to confirm delete";
@@ -323,6 +346,73 @@ function openProfile(id){
         b.style.borderColor=""; b.style.color=""; } },4000);
     }
   }));
+}
+
+/* ---------- the mock log ---------- */
+function buildLogFilter(){
+  const sel=document.getElementById("logFilter");
+  const cur=sel.value;
+  sel.innerHTML='<option value="">All members</option>';
+  DB.participants.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(p=>{
+    const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; sel.appendChild(o);
+  });
+  if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
+}
+
+/* One mock's own overall, so the log shows what that session produced
+   rather than the member's running rating. */
+function mockOverall(mock){
+  let num=0, den=0;
+  for(const [pk,p] of Object.entries(MODEL)){
+    let n=0, d=0;
+    for(const [sk,sub] of Object.entries(p.subs)){
+      const v=mockCompetencyScore(mock, sk);
+      if(v!==null){ n+=v*sub.weight; d+=sub.weight; }
+    }
+    if(d){ num += (n/d)*p.weight; den += p.weight; }
+  }
+  return den ? round1(num/den) : null;
+}
+
+function renderLog(){
+  const f=document.getElementById("logFilter").value;
+  let rows=DB.mocks.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+  if(f) rows=rows.filter(m=>m.participantId===f);
+  const tb=document.getElementById("mocklog");
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No mocks logged yet.</td></tr>';
+  }else{
+    tb.innerHTML=rows.map(m=>{
+      const p=DB.participant(m.participantId);
+      const v=mockOverall(m);
+      const mix=mockMix(m);
+      const mixHtml = (mix.E+mix.M+mix.H)
+        ? `<span class="dchip dE">${mix.E}</span><span class="dchip dM">${mix.M}</span><span class="dchip dH">${mix.H}</span>`
+        : '<span class="small" style="color:var(--muted-light)">n/a</span>';
+      const warn = (mix.H===0 && (mix.E+mix.M)>0)
+        ? ' <span class="pill" title="No hard questions asked, so this score is not comparable with a mock that included them">no hard</span>' : '';
+      return `<tr data-id="${esc(m.participantId)}" tabindex="0" role="button"
+            aria-label="Open profile for ${esc(p?p.name:"member")}">
+        <td class="small">${fmtDate(m.date)}</td>
+        <td><b>${esc(p?p.name:"(removed)")}</b></td>
+        <td class="hidesm small">${esc(m.type)||"Mock"}</td>
+        <td class="hidesm small">${esc(m.coach)||"n/a"}</td>
+        <td class="hidesm">${mixHtml}${warn}</td>
+        <td class="small">${(m.answers||[]).length||Object.keys(m.scores||{}).length}</td>
+        <td><span class="score ${scoreClass(v)}" style="font-size:1.1rem">${fmtScore(v)}</span></td>
+      </tr>`;
+    }).join("");
+    tb.querySelectorAll("tr[data-id]").forEach(tr=>{
+      const open=()=>openProfile(tr.dataset.id);
+      tr.addEventListener("click",open);
+      tr.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();open();} });
+    });
+  }
+  const noHard=DB.mocks.filter(m=>mockMix(m).H===0 && (m.answers||[]).length).length;
+  document.getElementById("logNote").innerHTML =
+    `${rows.length} mock${rows.length===1?"":"s"} shown of ${DB.mocks.length} logged.`+
+    (noHard?` ${noHard} included no hard questions, so ${noHard===1?"its score is":"their scores are"} not comparable with mocks that did.`:"")+
+    ` Chips show the easy / medium / hard mix. Click a row for the member's profile.`;
 }
 
 /* ---------- coach: log a mock ---------- */
@@ -437,7 +527,7 @@ function saveMock(e){
     notes:document.getElementById("mkNotes").value.trim(),
     answers
   });
-  closeDrawer(); renderBoard(); renderWhoAmI();
+  closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
 }
 
 /* ---------- coach: add member ---------- */
@@ -475,7 +565,7 @@ function addMemberForm(){
       note:document.getElementById("amNote").value.trim(),
       joined:new Date().toISOString().slice(0,10)
     });
-    closeDrawer(); renderBoard(); renderWhoAmI();
+    closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
   });
 }
 
@@ -505,6 +595,7 @@ function showExportFallback(){
 function wireControls(){
   document.getElementById("search").addEventListener("input",renderBoard);
   document.getElementById("cohortFilter").addEventListener("change",renderBoard);
+  document.getElementById("logFilter").addEventListener("change",renderLog);
   const lm=document.getElementById("btnLogMock");
   if(lm){
     lm.addEventListener("click",()=>logMockForm());
@@ -512,7 +603,7 @@ function wireControls(){
     const bc=document.getElementById("btnClear");
     bc.addEventListener("click",()=>{
       if(bc.dataset.armed){
-        DB.clearAll(); buildCohortFilter(); renderBoard(); renderWhoAmI();
+        DB.clearAll(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
         bc.textContent="Clear all"; delete bc.dataset.armed;
         bc.style.borderColor=""; bc.style.color="";
       }else{
