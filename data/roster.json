@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 8,
+  "version": 9,
   "participants": [
     {
       "id": "p_yahil",
@@ -296,10 +296,10 @@
           "score": 10
         },
         {
-          "questionId": "q31",
-          "text": "Why do you add non-controlling interest?",
+          "questionId": "q498",
+          "text": "What's non-controlling interest?",
           "competency": "ev",
-          "difficulty": "H",
+          "difficulty": "M",
           "score": 0
         },
         {
@@ -307,7 +307,7 @@
           "text": "What's preferred stock?",
           "competency": "ev",
           "difficulty": "M",
-          "score": 2.5
+          "score": 0
         },
         {
           "questionId": "q07",

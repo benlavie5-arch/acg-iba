@@ -3004,6 +3004,12 @@
       "text": "Pressure test: tell me how you would get away with murder",
       "competency": "speaking",
       "difficulty": "M"
+    },
+    {
+      "id": "q498",
+      "text": "What's non-controlling interest?",
+      "competency": "ev",
+      "difficulty": "M"
     }
   ]
 }
