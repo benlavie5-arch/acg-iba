@@ -2998,6 +2998,12 @@
       "text": "What's a stock you'd short, and what's the catalyst?",
       "competency": "market",
       "difficulty": "M"
+    },
+    {
+      "id": "q497",
+      "text": "Pressure test: tell me how you would get away with murder",
+      "competency": "speaking",
+      "difficulty": "M"
     }
   ]
 }

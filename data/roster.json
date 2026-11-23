@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 5,
+  "version": 6,
   "participants": [
     {
       "id": "p_yahil",
@@ -373,8 +373,8 @@
           "score": 0
         },
         {
-          "questionId": "q46",
-          "text": "Pressure test: convince me you didn't do it",
+          "questionId": "q497",
+          "text": "Pressure test: tell me how you would get away with murder",
           "competency": "speaking",
           "difficulty": "M",
           "score": 5
