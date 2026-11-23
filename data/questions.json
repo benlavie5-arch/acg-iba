@@ -9,64 +9,1339 @@
   },
   "_weights": {
     "_comment": "Weight applied to a question's contribution. Above 5 uses 'up', below 5 uses 'down', exactly 5 uses 1.0.",
-    "E": {"up": 0.25, "down": 2.5},
-    "M": {"up": 0.75, "down": 1.5},
-    "H": {"up": 1.0,  "down": 1.0}
+    "E": {
+      "up": 0.25,
+      "down": 2.5
+    },
+    "M": {
+      "up": 0.75,
+      "down": 1.5
+    },
+    "H": {
+      "up": 1.0,
+      "down": 1.0
+    }
   },
   "questions": [
-    {"id":"q01","text":"Walk me through the income statement","competency":"accounting","difficulty":"E"},
-    {"id":"q02","text":"Walk me through the three statements","competency":"accounting","difficulty":"E"},
-    {"id":"q03","text":"What's the cash flow statement?","competency":"accounting","difficulty":"E"},
-    {"id":"q04","text":"What's the balance sheet?","competency":"accounting","difficulty":"E"},
-    {"id":"q05","text":"Which statement is most important, and why?","competency":"accounting","difficulty":"E"},
-    {"id":"q06","text":"What's the problem with the balance sheet?","competency":"accounting","difficulty":"M"},
-    {"id":"q07","text":"How do the three statements connect?","competency":"accounting","difficulty":"M"},
-    {"id":"q08","text":"Give me five more ways they connect","competency":"accounting","difficulty":"M"},
-    {"id":"q09","text":"What are accounts receivable?","competency":"accounting","difficulty":"E"},
-    {"id":"q10","text":"Accrual basis vs cash basis","competency":"accounting","difficulty":"E"},
-    {"id":"q11","text":"What's depreciation?","competency":"accounting","difficulty":"E"},
-    {"id":"q12","text":"What's a residual?","competency":"accounting","difficulty":"M"},
-    {"id":"q13","text":"Depreciation increases by 10 - walk me through it","competency":"accounting","difficulty":"M"},
-    {"id":"q14","text":"What are deferred tax assets and liabilities?","competency":"accounting","difficulty":"H"},
-    {"id":"q15","text":"What's working capital, and how do changes affect cash?","competency":"accounting","difficulty":"M"},
-    {"id":"q16","text":"What's the formula for present value?","competency":"corpfin","difficulty":"E"},
-    {"id":"q17","text":"What's net present value?","competency":"corpfin","difficulty":"E"},
-    {"id":"q18","text":"How do you calculate WACC?","competency":"corpfin","difficulty":"M"},
-    {"id":"q19","text":"Why (1 - tax rate), and why on debt?","competency":"corpfin","difficulty":"H"},
-    {"id":"q20","text":"Why is cost of debt below cost of equity?","competency":"corpfin","difficulty":"M"},
-    {"id":"q21","text":"What's beta?","competency":"corpfin","difficulty":"M"},
-    {"id":"q22","text":"What's principal and interest?","competency":"corpfin","difficulty":"E"},
-    {"id":"q23","text":"What's a DCF?","competency":"dcf","difficulty":"E"},
-    {"id":"q24","text":"What's unlevered free cash flow?","competency":"dcf","difficulty":"M"},
-    {"id":"q25","text":"What's the discount rate?","competency":"dcf","difficulty":"E"},
-    {"id":"q26","text":"What's a perpetuity?","competency":"dcf","difficulty":"M"},
-    {"id":"q27","text":"What's the Gordon Growth model?","competency":"dcf","difficulty":"H"},
-    {"id":"q28","text":"Why use Gordon Growth over an exit multiple?","competency":"dcf","difficulty":"H"},
-    {"id":"q29","text":"Walk me through building a DCF","competency":"dcf","difficulty":"H"},
-    {"id":"q30","text":"Bridge equity value to enterprise value","competency":"ev","difficulty":"M"},
-    {"id":"q31","text":"Why do you add non-controlling interest?","competency":"ev","difficulty":"H"},
-    {"id":"q32","text":"Why do you subtract cash?","competency":"ev","difficulty":"M"},
-    {"id":"q33","text":"What's preferred stock?","competency":"ev","difficulty":"M"},
-    {"id":"q34","text":"What's the difference between a bond and a loan?","competency":"bonds","difficulty":"M"},
-    {"id":"q35","text":"What happens to bond prices when rates rise?","competency":"bonds","difficulty":"M"},
-    {"id":"q36","text":"Walk me through an M&A deal","competency":"mna","difficulty":"H"},
-    {"id":"q37","text":"What makes a deal accretive or dilutive?","competency":"mna","difficulty":"H"},
-    {"id":"q38","text":"Walk me through an LBO","competency":"lbo","difficulty":"H"},
-    {"id":"q39","text":"What makes a good LBO candidate?","competency":"lbo","difficulty":"M"},
-    {"id":"q40","text":"What are the main valuation methodologies?","competency":"valuation","difficulty":"M"},
-    {"id":"q41","text":"Which multiples pair with enterprise value, and why?","competency":"valuation","difficulty":"M"},
-    {"id":"q42","text":"Tell me about yourself","competency":"stories","difficulty":"E"},
-    {"id":"q43","text":"Why banking?","competency":"stories","difficulty":"E"},
-    {"id":"q44","text":"Tell me about a time you failed","competency":"stories","difficulty":"M"},
-    {"id":"q45","text":"Walk me through your resume","competency":"stories","difficulty":"E"},
-    {"id":"q46","text":"Pressure test: convince me you didn't do it","competency":"speaking","difficulty":"M"},
-    {"id":"q47","text":"Why should we take you over someone else?","competency":"speaking","difficulty":"M"},
-    {"id":"q48","text":"What's Bloomberg?","competency":"market","difficulty":"E"},
-    {"id":"q49","text":"What's the current Fed rate?","competency":"market","difficulty":"E"},
-    {"id":"q50","text":"What's CPI, and what was the last report?","competency":"market","difficulty":"E"},
-    {"id":"q51","text":"CPI or PCE - which matters more, and why?","competency":"market","difficulty":"M"},
-    {"id":"q52","text":"Conference Board or Michigan - which is more accurate?","competency":"market","difficulty":"M"},
-    {"id":"q53","text":"What's going on in the market?","competency":"market","difficulty":"E"},
-    {"id":"q54","text":"Pitch me a stock","competency":"market","difficulty":"H"}
+    {
+      "id": "q01",
+      "text": "Walk me through the income statement",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q02",
+      "text": "Walk me through the three statements",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q03",
+      "text": "What's the cash flow statement?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q04",
+      "text": "What's the balance sheet?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q05",
+      "text": "Which statement is most important, and why?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q06",
+      "text": "What's the problem with the balance sheet?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q07",
+      "text": "How do the three statements connect?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q08",
+      "text": "Give me five more ways they connect",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q09",
+      "text": "What are accounts receivable?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q10",
+      "text": "Accrual basis vs cash basis",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q11",
+      "text": "What's depreciation?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q12",
+      "text": "What's a residual?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q13",
+      "text": "Depreciation increases by 10 - walk me through it",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q14",
+      "text": "What are deferred tax assets and liabilities?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q15",
+      "text": "What's working capital, and how do changes affect cash?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q16",
+      "text": "What's the formula for present value?",
+      "competency": "corpfin",
+      "difficulty": "E"
+    },
+    {
+      "id": "q17",
+      "text": "What's net present value?",
+      "competency": "corpfin",
+      "difficulty": "E"
+    },
+    {
+      "id": "q18",
+      "text": "How do you calculate WACC?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q19",
+      "text": "Why (1 - tax rate), and why on debt?",
+      "competency": "corpfin",
+      "difficulty": "H"
+    },
+    {
+      "id": "q20",
+      "text": "Why is cost of debt below cost of equity?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q21",
+      "text": "What's beta?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q22",
+      "text": "What's principal and interest?",
+      "competency": "corpfin",
+      "difficulty": "E"
+    },
+    {
+      "id": "q23",
+      "text": "What's a DCF?",
+      "competency": "dcf",
+      "difficulty": "E"
+    },
+    {
+      "id": "q24",
+      "text": "What's unlevered free cash flow?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q25",
+      "text": "What's the discount rate?",
+      "competency": "dcf",
+      "difficulty": "E"
+    },
+    {
+      "id": "q26",
+      "text": "What's a perpetuity?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q27",
+      "text": "What's the Gordon Growth model?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q28",
+      "text": "Why use Gordon Growth over an exit multiple?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q29",
+      "text": "Walk me through building a DCF",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q30",
+      "text": "Bridge equity value to enterprise value",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q31",
+      "text": "Why do you add non-controlling interest?",
+      "competency": "ev",
+      "difficulty": "H"
+    },
+    {
+      "id": "q32",
+      "text": "Why do you subtract cash?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q33",
+      "text": "What's preferred stock?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q34",
+      "text": "What's the difference between a bond and a loan?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q35",
+      "text": "What happens to bond prices when rates rise?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q36",
+      "text": "Walk me through an M&A deal",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q37",
+      "text": "What makes a deal accretive or dilutive?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q38",
+      "text": "Walk me through an LBO",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q39",
+      "text": "What makes a good LBO candidate?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q40",
+      "text": "What are the main valuation methodologies?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q41",
+      "text": "Which multiples pair with enterprise value, and why?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q42",
+      "text": "Tell me about yourself",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q43",
+      "text": "Why banking?",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q44",
+      "text": "Tell me about a time you failed",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q45",
+      "text": "Walk me through your resume",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q46",
+      "text": "Pressure test: convince me you didn't do it",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q47",
+      "text": "Why should we take you over someone else?",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q48",
+      "text": "What's Bloomberg?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q49",
+      "text": "What's the current Fed rate?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q50",
+      "text": "What's CPI, and what was the last report?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q51",
+      "text": "CPI or PCE - which matters more, and why?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q52",
+      "text": "Conference Board or Michigan - which is more accurate?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q53",
+      "text": "What's going on in the market?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q54",
+      "text": "Pitch me a stock",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q055",
+      "text": "What are the three financial statements?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q056",
+      "text": "What's on the income statement?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q057",
+      "text": "What's revenue versus profit?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q058",
+      "text": "What's gross profit?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q059",
+      "text": "What's EBITDA?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q060",
+      "text": "What's the difference between EBIT and EBITDA?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q061",
+      "text": "What are accounts payable?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q062",
+      "text": "What's inventory?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q063",
+      "text": "What's net income?",
+      "competency": "accounting",
+      "difficulty": "E"
+    },
+    {
+      "id": "q064",
+      "text": "Is EBITDA a good proxy for cash flow? Why or why not?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q065",
+      "text": "Why can a profitable company run out of cash?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q066",
+      "text": "If you could only look at one statement, which would you pick?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q067",
+      "text": "Where does interest expense show up on the cash flow statement?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q068",
+      "text": "Where do dividends show up?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q069",
+      "text": "What's deferred revenue, and why is it a liability?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q070",
+      "text": "What's the difference between accounts payable and accrued expenses?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q071",
+      "text": "What's goodwill, and how is it created?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q072",
+      "text": "Is goodwill amortized under US GAAP?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q073",
+      "text": "What's the difference between capitalizing and expensing a cost?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q074",
+      "text": "What's stock-based compensation, and how does it flow through?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q075",
+      "text": "Inventory increases by 10, bought in cash. Walk me through it.",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q076",
+      "text": "A company buys 100 of equipment with debt. Walk me through it.",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q077",
+      "text": "Net income rises 10 and a 3 dividend is paid. Walk me through it.",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q078",
+      "text": "Goodwill is written down by 100. Walk me through it.",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q079",
+      "text": "An asset with book value 100 is sold for 120. Walk me through it.",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q080",
+      "text": "What's the difference between LIFO and FIFO, and who uses which?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q081",
+      "text": "What happens to the statements in a rising-price environment under LIFO?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q082",
+      "text": "How do operating and finance leases differ under ASC 842?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q083",
+      "text": "How does a lease classification change EBITDA?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q084",
+      "text": "What's a DTL, and what creates one?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q085",
+      "text": "How do you spot earnings quality problems in a filing?",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q086",
+      "text": "What's basic versus diluted share count?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q087",
+      "text": "Explain the treasury stock method.",
+      "competency": "accounting",
+      "difficulty": "H"
+    },
+    {
+      "id": "q088",
+      "text": "What's the time value of money?",
+      "competency": "corpfin",
+      "difficulty": "E"
+    },
+    {
+      "id": "q089",
+      "text": "What's a discount rate, in plain terms?",
+      "competency": "corpfin",
+      "difficulty": "E"
+    },
+    {
+      "id": "q090",
+      "text": "What's IRR, and how does it differ from NPV?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q091",
+      "text": "If NPV and IRR disagree, which do you trust?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q092",
+      "text": "What's the cost of equity, and how do you calculate it?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q093",
+      "text": "What's CAPM?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q094",
+      "text": "What's the risk-free rate, and what do you use for it?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q095",
+      "text": "What's the equity risk premium?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q096",
+      "text": "What's levered versus unlevered beta, and why unlever it?",
+      "competency": "corpfin",
+      "difficulty": "H"
+    },
+    {
+      "id": "q097",
+      "text": "Walk me through unlevering and relevering beta.",
+      "competency": "corpfin",
+      "difficulty": "H"
+    },
+    {
+      "id": "q098",
+      "text": "Why is debt cheaper than equity?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q099",
+      "text": "If debt is cheaper, why doesn't a company fund itself entirely with debt?",
+      "competency": "corpfin",
+      "difficulty": "H"
+    },
+    {
+      "id": "q100",
+      "text": "What's the optimal capital structure?",
+      "competency": "corpfin",
+      "difficulty": "H"
+    },
+    {
+      "id": "q101",
+      "text": "What happens to WACC as you add debt?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q102",
+      "text": "Why do companies buy back stock?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q103",
+      "text": "Dividend or buyback - which and why?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q104",
+      "text": "Why do we discount future cash flows?",
+      "competency": "dcf",
+      "difficulty": "E"
+    },
+    {
+      "id": "q105",
+      "text": "Walk me through the steps of a DCF.",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q106",
+      "text": "What's levered versus unlevered free cash flow?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q107",
+      "text": "Why do you use unlevered free cash flow in a DCF?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q108",
+      "text": "How do you get from EBITDA to unlevered free cash flow?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q109",
+      "text": "Why add back depreciation?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q110",
+      "text": "Why subtract capital expenditure?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q111",
+      "text": "How do you treat working capital in a DCF?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q112",
+      "text": "What's terminal value, and why does it matter so much?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q113",
+      "text": "What are the two ways to calculate terminal value?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q114",
+      "text": "What's a reasonable terminal growth rate, and why?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q115",
+      "text": "What happens to your valuation if WACC rises by 1%?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q116",
+      "text": "What are the weaknesses of a DCF?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q117",
+      "text": "When would you not use a DCF?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q118",
+      "text": "How do you sanity-check a DCF output?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q119",
+      "text": "What's enterprise value?",
+      "competency": "ev",
+      "difficulty": "E"
+    },
+    {
+      "id": "q120",
+      "text": "What's equity value?",
+      "competency": "ev",
+      "difficulty": "E"
+    },
+    {
+      "id": "q121",
+      "text": "Why does enterprise value matter more than market cap?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q122",
+      "text": "Can enterprise value be negative? What would that mean?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q123",
+      "text": "A company raises 100 of debt. What happens to EV and equity value?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q124",
+      "text": "A company issues 100 of equity. What happens to each?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q125",
+      "text": "Why add non-controlling interest but subtract equity investments?",
+      "competency": "ev",
+      "difficulty": "H"
+    },
+    {
+      "id": "q126",
+      "text": "Should operating leases be in the EV bridge?",
+      "competency": "ev",
+      "difficulty": "H"
+    },
+    {
+      "id": "q127",
+      "text": "What's net debt?",
+      "competency": "ev",
+      "difficulty": "M"
+    },
+    {
+      "id": "q128",
+      "text": "How do you value a company?",
+      "competency": "valuation",
+      "difficulty": "E"
+    },
+    {
+      "id": "q129",
+      "text": "What's comparable company analysis?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q130",
+      "text": "What are precedent transactions?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q131",
+      "text": "Why do precedents usually come in higher than comps?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q132",
+      "text": "How do you pick a comps set?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q133",
+      "text": "Which valuation method gives the highest value, and why?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q134",
+      "text": "What's EV/EBITDA, and what does it tell you?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q135",
+      "text": "Why would you use EV/Revenue?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q136",
+      "text": "Why can't you use P/E with enterprise value?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q137",
+      "text": "Two identical companies trade at different multiples. Why?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q138",
+      "text": "What's a football field chart?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q139",
+      "text": "How would you value a company with negative EBITDA?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q140",
+      "text": "How would you value a private company with no comparables?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q141",
+      "text": "What's a control premium?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q142",
+      "text": "What's the difference between a public and a private market valuation?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q143",
+      "text": "What's a bond?",
+      "competency": "bonds",
+      "difficulty": "E"
+    },
+    {
+      "id": "q144",
+      "text": "What's the coupon on a bond?",
+      "competency": "bonds",
+      "difficulty": "E"
+    },
+    {
+      "id": "q145",
+      "text": "What's par value?",
+      "competency": "bonds",
+      "difficulty": "E"
+    },
+    {
+      "id": "q146",
+      "text": "What's yield to maturity?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q147",
+      "text": "Why do bond prices move inversely to rates?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q148",
+      "text": "What's duration?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q149",
+      "text": "What's a credit spread, and what widens it?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q150",
+      "text": "What's the difference between investment grade and high yield?",
+      "competency": "bonds",
+      "difficulty": "M"
+    },
+    {
+      "id": "q151",
+      "text": "What's a covenant, and what does it protect?",
+      "competency": "bonds",
+      "difficulty": "H"
+    },
+    {
+      "id": "q152",
+      "text": "What's the difference between secured and unsecured debt?",
+      "competency": "bonds",
+      "difficulty": "H"
+    },
+    {
+      "id": "q153",
+      "text": "Walk me through the capital structure in a bankruptcy.",
+      "competency": "bonds",
+      "difficulty": "H"
+    },
+    {
+      "id": "q154",
+      "text": "Why do companies acquire other companies?",
+      "competency": "mna",
+      "difficulty": "E"
+    },
+    {
+      "id": "q155",
+      "text": "What's the difference between a merger and an acquisition?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q156",
+      "text": "What are synergies, and what types are there?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q157",
+      "text": "Which synergies would you trust more, revenue or cost?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q158",
+      "text": "What's accretion and dilution?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q159",
+      "text": "How do you know if a deal is accretive?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q160",
+      "text": "All-cash, all-stock, or mixed - which is most likely accretive?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q161",
+      "text": "Walk me through an accretion/dilution analysis.",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q162",
+      "text": "What's purchase price allocation?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q163",
+      "text": "Why does goodwill get created in an acquisition?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q164",
+      "text": "What's a hostile takeover?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q165",
+      "text": "What defenses does a target have?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q166",
+      "text": "What's due diligence, and what are you looking for?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q167",
+      "text": "What's the difference between a stock and an asset purchase?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q168",
+      "text": "Why might a deal fall apart?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q169",
+      "text": "Walk me through a deal you've followed recently.",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q170",
+      "text": "What's a fairness opinion?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q171",
+      "text": "What's a leveraged buyout?",
+      "competency": "lbo",
+      "difficulty": "E"
+    },
+    {
+      "id": "q172",
+      "text": "Why does using debt increase returns?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q173",
+      "text": "Walk me through a paper LBO.",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q174",
+      "text": "What are the sources and uses in an LBO?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q175",
+      "text": "What drives returns in an LBO?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q176",
+      "text": "What's the typical hold period and target return?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q177",
+      "text": "What makes a company a good LBO candidate?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q178",
+      "text": "What would make a company a bad LBO candidate?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q179",
+      "text": "How does a sponsor exit an LBO?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q180",
+      "text": "What's a dividend recap?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q181",
+      "text": "How do you build a debt schedule?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q182",
+      "text": "What's a cash sweep?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q183",
+      "text": "How does the choice of exit multiple affect IRR?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q184",
+      "text": "Why do PE firms prefer stable cash flows?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q185",
+      "text": "What's the difference between an LBO and a DCF in what it tells you?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q186",
+      "text": "Why investment banking and not something else in finance?",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q187",
+      "text": "Why our firm?",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q188",
+      "text": "Why this group?",
+      "competency": "stories",
+      "difficulty": "E"
+    },
+    {
+      "id": "q189",
+      "text": "What are your strengths and weaknesses?",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q190",
+      "text": "Tell me about a time you worked on a team.",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q191",
+      "text": "Tell me about a time you led something.",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q192",
+      "text": "Tell me about a time you disagreed with someone.",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q193",
+      "text": "Tell me about a time you handled a heavy workload.",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q194",
+      "text": "What's a piece of feedback you received and what did you do with it?",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q195",
+      "text": "Where do you see yourself in five years?",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q196",
+      "text": "Why should we pick you?",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q197",
+      "text": "What questions do you have for me?",
+      "competency": "stories",
+      "difficulty": "M"
+    },
+    {
+      "id": "q198",
+      "text": "Why restructuring, and why here over a bulge bracket?",
+      "competency": "stories",
+      "difficulty": "H"
+    },
+    {
+      "id": "q199",
+      "text": "Pressure test: defend an answer you just gave that I disagree with.",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q200",
+      "text": "Explain a DCF to someone with no finance background.",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q201",
+      "text": "You have 60 seconds. Pitch yourself.",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q202",
+      "text": "I don't think you actually want banking. Convince me.",
+      "competency": "speaking",
+      "difficulty": "H"
+    },
+    {
+      "id": "q203",
+      "text": "You got that wrong. Try again.",
+      "competency": "speaking",
+      "difficulty": "H"
+    },
+    {
+      "id": "q204",
+      "text": "Brainteaser: how many golf balls fit in a school bus?",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q205",
+      "text": "Brainteaser: 100 balls, 2 buckets.",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q206",
+      "text": "Brainteaser: the 3 jars problem.",
+      "competency": "speaking",
+      "difficulty": "M"
+    },
+    {
+      "id": "q207",
+      "text": "What's the Dow at? The S&P?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q208",
+      "text": "Where are 10-year Treasury yields?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q209",
+      "text": "What did the Fed do at its last meeting?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q210",
+      "text": "What's the Fed's dual mandate?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q211",
+      "text": "What's PCE, and why does the Fed prefer it?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q212",
+      "text": "What's the yield curve telling you right now?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q213",
+      "text": "What's an inverted yield curve, and why does it matter?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q214",
+      "text": "What's quantitative tightening?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q215",
+      "text": "Where is oil, and what's driving it?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q216",
+      "text": "What's one deal in the news you found interesting?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q217",
+      "text": "What sector would you invest in right now, and why?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q218",
+      "text": "Pitch me a short.",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q219",
+      "text": "What's the biggest risk to markets over the next year?",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q220",
+      "text": "What do you read to follow markets?",
+      "competency": "market",
+      "difficulty": "M"
+    }
   ]
 }
