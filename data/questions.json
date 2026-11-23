@@ -1342,6 +1342,240 @@
       "text": "What do you read to follow markets?",
       "competency": "market",
       "difficulty": "M"
+    },
+    {
+      "id": "q221",
+      "text": "What's the difference between upstream, midstream and downstream?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q222",
+      "text": "What does an E&P company actually do?",
+      "competency": "market",
+      "difficulty": "E"
+    },
+    {
+      "id": "q223",
+      "text": "What drives the price of oil?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q224",
+      "text": "What drives natural gas prices, and why are they more regional than oil?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q225",
+      "text": "What's the difference between WTI and Brent?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q226",
+      "text": "What's a basis differential?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q227",
+      "text": "What was the shale revolution, and what did it change?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q228",
+      "text": "What's LNG, and why does it matter geopolitically?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q229",
+      "text": "What do oilfield services companies do, and how are they cyclical?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q230",
+      "text": "What's a crack spread?",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q231",
+      "text": "Why do refiners do well when crude falls?",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q232",
+      "text": "Where do you think oil goes over the next year, and why?",
+      "competency": "market",
+      "difficulty": "H"
+    },
+    {
+      "id": "q233",
+      "text": "Why would an energy company hedge, and what does it give up?",
+      "competency": "market",
+      "difficulty": "M"
+    },
+    {
+      "id": "q234",
+      "text": "How do you value an E&P company differently from a normal company?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q235",
+      "text": "What are proved, probable and possible reserves?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q236",
+      "text": "What's PDP, and why do lenders care about it?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q237",
+      "text": "What's PV-10, and what are its limitations?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q238",
+      "text": "What's a net asset value model, and when do you use one?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q239",
+      "text": "Why doesn't a standard DCF work well for an E&P company?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q240",
+      "text": "What's a decline curve, and how does it affect a forecast?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q241",
+      "text": "What multiples do you use for midstream companies, and why?",
+      "competency": "valuation",
+      "difficulty": "M"
+    },
+    {
+      "id": "q242",
+      "text": "Why are midstream assets often valued on EV/EBITDA rather than a DCF?",
+      "competency": "valuation",
+      "difficulty": "H"
+    },
+    {
+      "id": "q243",
+      "text": "What's unique about diligence on an oil and gas acquisition?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q244",
+      "text": "Why are energy assets difficult to lever?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q245",
+      "text": "Company A trades at a 20x P/E, Company B at 15x. All-stock deal, no synergies. Accretive or dilutive, and why?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q246",
+      "text": "Acquirer P/E is 12x. Target P/E is 18x. All-stock. What happens to EPS?",
+      "competency": "mna",
+      "difficulty": "M"
+    },
+    {
+      "id": "q247",
+      "text": "Acquirer has 100M shares at $20 and $100M net income. Target has 50M shares at $20 and $50M net income. Funded 60% stock, 40% debt at 10%, 25% tax rate, no synergies. Accretion or dilution?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q248",
+      "text": "A buyer pays $500M for a company with $300M of book equity. How much goodwill is created, and what else do you need to know?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q249",
+      "text": "A deal is 2% dilutive. What level of synergies makes it breakeven?",
+      "competency": "mna",
+      "difficulty": "H"
+    },
+    {
+      "id": "q250",
+      "text": "Sponsor buys a company for 10x EBITDA of $100M, funds 60% with debt, exits at 10x in five years with EBITDA at $150M and $200M of debt repaid. What's the approximate MOIC?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q251",
+      "text": "If a sponsor doubles money in three years, roughly what IRR is that?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q252",
+      "text": "If a sponsor triples money in five years, roughly what IRR is that?",
+      "competency": "lbo",
+      "difficulty": "M"
+    },
+    {
+      "id": "q253",
+      "text": "Entry at 8x, exit at 8x, no debt paydown, EBITDA flat. What's the IRR, and why?",
+      "competency": "lbo",
+      "difficulty": "H"
+    },
+    {
+      "id": "q254",
+      "text": "A perpetuity pays $10 a year forever and the discount rate is 10%. What's it worth?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q255",
+      "text": "Cash flow of $100 growing at 3%, discount rate 8%. What's the terminal value?",
+      "competency": "dcf",
+      "difficulty": "M"
+    },
+    {
+      "id": "q256",
+      "text": "Terminal value is 80% of your DCF value. Is that a problem?",
+      "competency": "dcf",
+      "difficulty": "H"
+    },
+    {
+      "id": "q257",
+      "text": "A project costs $100 and returns $120 in one year. Discount rate 10%. What's the NPV?",
+      "competency": "corpfin",
+      "difficulty": "M"
+    },
+    {
+      "id": "q258",
+      "text": "Revenue is 1,000, COGS 600, OpEx 200, D&A 50, interest 30, tax 25%. What's EBITDA and net income?",
+      "competency": "accounting",
+      "difficulty": "M"
+    },
+    {
+      "id": "q259",
+      "text": "Receivables rise 20, inventory rises 15, payables rise 10. What's the effect on cash?",
+      "competency": "accounting",
+      "difficulty": "M"
     }
   ]
 }
