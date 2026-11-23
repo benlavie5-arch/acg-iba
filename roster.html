@@ -106,11 +106,11 @@
       <div class="card">
         <span class="num">03</span>
         <h3>Weighted profile</h3>
-        <p>Each new mock counts twice as much as the one before it. Your profile tracks current ability rather than averaging away recent progress.</p>
+        <p>Each new mock counts 1.5 times as much as the one before it. Your profile tracks current ability rather than averaging away recent progress.</p>
       </div>
     </div>
     <div class="note info mt32">
-      <b>Why recency-weighted?</b> A flat average punishes you for a bad first mock forever. Doubling the weight of each newer session means a member who was a 5 in September and a 9 in November reads as close to a 9, which is the number that actually predicts how the real interview goes.
+      <b>Why recency-weighted?</b> A flat average punishes you for a bad first mock forever. Weighting each newer session 1.5 times the last means a member who was a 5 in September and a 9 in November reads closer to the 9, which is the number that actually predicts how the real interview goes. It still lets the earlier mocks count for something, so one strong session does not erase a pattern.
     </div>
   </div>
 </section>
@@ -153,7 +153,22 @@
   <div class="wrap">
     <p class="eyebrow">Reading the numbers</p>
     <h3 style="margin-bottom:10px">How a score is built</h3>
-    <p class="small" style="max-width:76ch">Each competency is scored 1 to 10 only on the mocks that actually tested it. Within a competency, mocks are weighted by recency: the newest counts <b id="decayTxt"></b> times the one before it, 4 times the one before that, and so on. Pillar and overall scores renormalise over whatever has been tested, so an untested competency never drags a score down. It simply doesn't count yet.</p>
+    <p class="small" style="max-width:76ch">Every answer gets one of five scores: <b>0</b> didn't know it, <b>2.5</b> knew the term but couldn't explain it, <b>5</b> correct but incomplete or needed prompting, <b>7.5</b> complete and correct, <b>10</b> complete, correct and explained why unprompted. Nothing in between, which is what lets two coaches agree.</p>
+
+    <p class="small" style="max-width:76ch;margin-top:14px"><b>Difficulty decides how hard an answer pulls</b>, and it pulls differently depending on whether you got it right. Every question is tagged easy, medium or hard in the bank.</p>
+
+    <div class="tablewrap" style="margin-top:14px;max-width:560px">
+      <table class="sm">
+        <tr><th>Difficulty</th><th>Answered above 5</th><th>Answered below 5</th></tr>
+        <tr><td><span class="dchip dE">E</span> Easy</td><td>0.25&times;</td><td><b>2.5&times;</b></td></tr>
+        <tr><td><span class="dchip dM">M</span> Medium</td><td>0.75&times;</td><td>1.5&times;</td></tr>
+        <tr><td><span class="dchip dH">H</span> Hard</td><td>1&times;</td><td>1&times;</td></tr>
+      </table>
+    </div>
+
+    <p class="small" style="max-width:76ch;margin-top:14px">Getting an easy question right barely moves your score, because you were expected to know it. Missing one costs a great deal. Hard questions count the same either way, so there is no penalty for being stretched. A score of exactly 5 always counts 1&times;.</p>
+
+    <p class="small" style="max-width:76ch;margin-top:14px">A competency is scored only on the mocks that actually tested it. Across mocks, the newest counts <b id="decayTxt"></b> times the one before it, and so on back. Pillar and overall scores renormalise over whatever has been tested, so an untested competency never drags a score down. It simply doesn't count yet.</p>
   </div>
 </section>
 

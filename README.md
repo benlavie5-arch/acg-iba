@@ -143,7 +143,7 @@ Change the numbers in `DIFFICULTY` in `assets/app.js` to retune.
 - Overall is the weighted mean of the pillars that have data, again renormalised.
 - A member with no mocks shows as unrated rather than as a zero.
 
-Change `DECAY` in `app.js` to tune recency bias: `1` = flat average, `3` = more aggressive.
+Change `DECAY` in `app.js` to tune recency bias: `1` = flat average, higher = more aggressive.
 
 ---
 
@@ -266,7 +266,7 @@ click any row to open that member's profile.
 
 The log's Result column is the score that one session produced. The rankings
 above it show the member's running rating across all their mocks, with the
-newest weighted 2x.
+newest weighted 1.5x.
 
 ---
 

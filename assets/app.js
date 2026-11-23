@@ -80,8 +80,8 @@ function answerWeight(score, difficulty){
 
 /* --- Recency decay ------------------------------------------------------
    Each newer mock counts DECAY x as much as the one before it.
-   2 = your spec. 1 = all mocks equal. 3 = even more recency-biased.      */
-const DECAY = 2;
+   1 = all mocks weigh the same. Higher = more recency-biased.            */
+const DECAY = 1.5;
 
 /* --- Access passcodes (SHA-256) -----------------------------------------
    These are OBFUSCATION, NOT SECURITY. A static site cannot keep secrets.
