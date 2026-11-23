@@ -277,14 +277,41 @@ function openProfile(id){
 
   const history=mocks.length? mocks.map(m=>{
     const covered=(m.answers||[]).length||Object.keys(m.scores||{}).length;
-    const del = ROLE==="coach" ? `<button class="btn btn-outline btn-sm" data-del="${m.id}" style="margin-top:9px">Delete</button>`:"";
+    const del = ROLE==="coach" ? `<button class="btn btn-outline btn-sm" data-del="${m.id}" style="margin-top:11px">Delete</button>`:"";
+
+    /* Every question asked, grouped by competency, worst score first so the
+       gaps are the first thing you read. */
+    let qlist="";
+    if(Array.isArray(m.answers) && m.answers.length){
+      const byComp={};
+      m.answers.forEach(a=>{ (byComp[a.competency]=byComp[a.competency]||[]).push(a); });
+      const label=k=>{
+        for(const p of Object.values(MODEL)) if(p.subs[k]) return p.subs[k].label;
+        return k;
+      };
+      qlist=`<details class="qlog"><summary>${m.answers.length} questions asked</summary>`
+        + Object.keys(byComp).sort((a,b)=>label(a).localeCompare(label(b))).map(c=>{
+            const rows=byComp[c].slice().sort((x,y)=>x.score-y.score).map(a=>`
+              <div class="qrow">
+                <span class="dchip d${a.difficulty}">${a.difficulty}</span>
+                <span class="qtext">${esc(a.text)}</span>
+                <span class="score ${scoreClass(a.score)}" style="font-size:.95rem">${a.score}</span>
+              </div>`).join("");
+            return `<p class="qcomp">${esc(label(c))}</p>${rows}`;
+          }).join("")
+        + `</details>`;
+    }else if(m.scores){
+      qlist=`<p class="small" style="margin:8px 0 0;color:var(--muted-light)">Logged before the question bank existed, so individual questions were not recorded.</p>`;
+    }
+
     return `<div class="card" style="padding:17px;margin-bottom:11px">
       <div class="flex between" style="margin-bottom:7px">
         <b style="font-size:.93rem">${esc(m.type)||"Mock"}</b>
         <span class="small">${fmtDate(m.date)}</span>
       </div>
       <p class="small" style="margin:0 0 7px">Coach: ${esc(m.coach)||"n/a"}${mixLabel(m)?" &middot; "+esc(mixLabel(m)):""}</p>
-      ${m.notes?`<p style="font-size:.9rem;margin:0;color:var(--muted)">${esc(m.notes)}</p>`:""}
+      ${m.notes?`<p style="font-size:.9rem;margin:0 0 4px;color:var(--muted)">${esc(m.notes)}</p>`:""}
+      ${qlist}
       ${del}
     </div>`;
   }).join("") : '<p class="small">No mocks logged yet.</p>';

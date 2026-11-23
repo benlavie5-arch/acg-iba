@@ -372,6 +372,24 @@ a[data-todo]{opacity:.5;cursor:not-allowed;text-decoration:line-through}
   .band{padding:11px 2px}
 }
 
+/* ---------- questions asked, inside a profile ---------- */
+.qlog{margin-top:10px;border-top:1px solid var(--rule);padding-top:9px}
+.qlog summary{
+  cursor:pointer;font-size:.8rem;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--accent-ink);user-select:none;
+}
+.qcomp{
+  font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:14px 0 5px;
+}
+.qrow{
+  display:grid;grid-template-columns:22px 1fr 34px;gap:9px;align-items:start;
+  padding:6px 0;border-bottom:1px solid var(--rule);
+}
+.qrow:last-child{border-bottom:0}
+.qrow .qtext{font-size:.85rem;line-height:1.4}
+.qrow .score{text-align:right}
+
 /* ---------- study material links ---------- */
 .matlink{
   display:flex;align-items:flex-start;gap:11px;padding:11px 13px;margin-bottom:8px;
