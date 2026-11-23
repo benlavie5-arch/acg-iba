@@ -120,6 +120,7 @@ const ROLE_KEY    = "acgiba_role";
 const DB = {
   participants: [],
   mocks: [],
+  version: 0,
   loaded: false,
 
   async load(){
@@ -136,20 +137,33 @@ const DB = {
     }catch(e){ console.warn("[acgiba] local store unreadable"); }
 
     /* Local edits supersede the committed file - but only if they actually
-       contain something. An empty local store used to permanently mask
-       roster.json, so anything committed to the repo never appeared. */
+       contain something AND they are not older than what has been committed.
+       data/roster.json carries a version; a local copy records the version it
+       was based on. When the committed file moves ahead, it wins, so data
+       pushed to the repo reaches browsers that already hold a local copy. */
+    const seedVersion = Number(seed.version||0);
+    const localVersion = Number((local&&local.baseVersion)||0);
+    const localStale = seedVersion > localVersion;
+
     const localHasContent = local &&
-      ((local.participants||[]).length || (local.mocks||[]).length);
+      ((local.participants||[]).length || (local.mocks||[]).length) && !localStale;
+
+    if(local && localStale){
+      console.info("[acgiba] committed roster is newer (v"+seedVersion+
+                   " > v"+localVersion+"); using it and clearing the local copy.");
+    }
 
     if(localHasContent){
       this.participants = local.participants || [];
       this.mocks        = local.mocks || [];
       this.source = "local";
+      this.version = localVersion;
     }else{
       this.participants = seed.participants || [];
       this.mocks        = seed.mocks || [];
       this.source = "committed";
-      if(local) this.resetLocal();     // clear the empty store so it stops masking
+      this.version = seedVersion;
+      if(local) this.resetLocal();     // stop a stale or empty copy from masking
     }
     this.loaded = true;
     return this;
@@ -159,6 +173,7 @@ const DB = {
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         participants:this.participants, mocks:this.mocks,
+        baseVersion:this.version||0,
         savedAt:new Date().toISOString()
       }));
       return true;

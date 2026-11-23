@@ -166,8 +166,13 @@ which copy you are looking at - this browser's saved copy, or the committed
 `roster.json`. Coaches get a **Reload from file** button that throws away the local
 copy and re-reads what is committed.
 
-A local copy only takes precedence when it actually contains members or mocks. An
-empty one is ignored and cleared, so committing data to the repo always shows up.
+A local copy only wins when it contains members or mocks **and** is not older than
+what is committed. `data/roster.json` carries a `version` number, and each local
+save records the version it was based on.
+
+**Bump `version` whenever you commit new data to `data/roster.json`.** Any browser
+holding an older copy drops it and takes the committed file on next load. Without
+the bump, a coach who has logged anything locally will keep seeing their own copy.
 
 ---
 

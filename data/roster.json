@@ -1,9 +1,6 @@
 {
-  "_comment": "Roster and mock log. Coaches add members and log mocks in the browser, then use 'Export roster.json' and commit the downloaded file back here.",
-  "_schema": {
-    "participants": "id, name, cohort, school, gradYear, track, joined, note",
-    "mocks": "id, participantId, date (YYYY-MM-DD), coach, type, notes, scores{ metricKey: 1-10 } - include ONLY the metrics that mock actually covered"
-  },
+  "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
+  "version": 2,
   "participants": [
     {
       "id": "p_yahil",
