@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 7,
+  "version": 8,
   "participants": [
     {
       "id": "p_yahil",
@@ -262,8 +262,8 @@
         },
         {
           "questionId": "q20",
-          "text": "Why is cost of debt below cost of equity?",
-          "competency": "corpfin",
+          "text": "Why might cost of debt be better than cost of equity?",
+          "competency": "dcf",
           "difficulty": "M",
           "score": 10
         },
