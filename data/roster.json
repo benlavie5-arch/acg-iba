@@ -1,6 +1,6 @@
 {
   "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 3,
+  "version": 4,
   "participants": [
     {
       "id": "p_yahil",
@@ -90,7 +90,7 @@
         },
         {
           "questionId": "q205",
-          "text": "Brainteaser: 100 balls, 2 buckets.",
+          "text": "Brainteaser: 100 balls, 50 red and 50 blue, and two buckets. Distribute them to maximise the chance of drawing a red ball when a bucket is picked at random. What is that probability?",
           "competency": "puzzles",
           "difficulty": "M",
           "score": 0
@@ -181,7 +181,7 @@
         },
         {
           "questionId": "q205",
-          "text": "Brainteaser: 100 balls, 2 buckets. (second attempt)",
+          "text": "Brainteaser: 100 balls, 50 red and 50 blue, and two buckets. Distribute them to maximise the chance of drawing a red ball when a bucket is picked at random. What is that probability? (second attempt)",
           "competency": "puzzles",
           "difficulty": "M",
           "score": 2.5
@@ -367,7 +367,7 @@
         },
         {
           "questionId": "q206",
-          "text": "Brainteaser: the 3 jars problem.",
+          "text": "Brainteaser: three jars, one labelled candy, one labelled chocolate, one labelled mixed. All three labels are wrong. You may draw one item from one jar. Which jar do you draw from, and how do you relabel all three?",
           "competency": "puzzles",
           "difficulty": "M",
           "score": 0
