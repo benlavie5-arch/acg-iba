@@ -60,6 +60,7 @@
         <button class="btn btn-outline btn-sm" id="btnAddMember">+ Member</button>
         <button class="btn btn-primary btn-sm" id="btnLogMock">Log a mock</button>
         <button class="btn btn-outline btn-sm" id="btnExport">Export roster.json</button>
+        <button class="btn btn-outline btn-sm" id="btnReload">Reload from file</button>
         <button class="btn btn-outline btn-sm" id="btnClear">Clear all</button>
       </div>
     </div>
@@ -176,8 +177,9 @@ function renderWhoAmI(){
   const badge = ROLE==="coach"
     ? '<span class="pill coach">Coach access</span>'
     : '<span class="pill">Member access (view only)</span>';
-  const local = DB.hasLocalEdits()
-    ? ' <span class="pill">Unsaved local changes, export to commit</span>' : '';
+  const local = DB.source==="local"
+    ? ' <span class="pill down">Showing this browser\'s copy, not the committed file. Export to commit.</span>'
+    : ' <span class="pill">Showing the committed roster.json</span>';
   el.innerHTML = badge + local +
     ' <button type="button" id="signout" class="linklike">Sign out</button>';
   document.getElementById("signout").addEventListener("click",signOut);
@@ -600,6 +602,14 @@ function wireControls(){
   if(lm){
     lm.addEventListener("click",()=>logMockForm());
     document.getElementById("btnAddMember").addEventListener("click",addMemberForm);
+    const br=document.getElementById("btnReload");
+    br.addEventListener("click",async ()=>{
+      br.disabled=true; br.textContent="Reloading...";
+      await DB.reloadFromFile();
+      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+      br.disabled=false; br.textContent="Reload from file";
+    });
+
     const bc=document.getElementById("btnClear");
     bc.addEventListener("click",()=>{
       if(bc.dataset.armed){

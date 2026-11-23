@@ -135,13 +135,21 @@ const DB = {
       if(raw) local = JSON.parse(raw);
     }catch(e){ console.warn("[acgiba] local store unreadable"); }
 
-    // Local edits fully supersede the seed file once a coach has saved anything.
-    if(local && local.participants){
-      this.participants = local.participants;
-      this.mocks = local.mocks || [];
+    /* Local edits supersede the committed file - but only if they actually
+       contain something. An empty local store used to permanently mask
+       roster.json, so anything committed to the repo never appeared. */
+    const localHasContent = local &&
+      ((local.participants||[]).length || (local.mocks||[]).length);
+
+    if(localHasContent){
+      this.participants = local.participants || [];
+      this.mocks        = local.mocks || [];
+      this.source = "local";
     }else{
       this.participants = seed.participants || [];
-      this.mocks = seed.mocks || [];
+      this.mocks        = seed.mocks || [];
+      this.source = "committed";
+      if(local) this.resetLocal();     // clear the empty store so it stops masking
     }
     this.loaded = true;
     return this;
@@ -161,11 +169,23 @@ const DB = {
   },
 
   hasLocalEdits(){
-    try{ return !!localStorage.getItem(STORAGE_KEY); }catch(e){ return false; }
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const p=JSON.parse(raw);
+      return !!((p.participants||[]).length || (p.mocks||[]).length);
+    }catch(e){ return false; }
   },
 
   resetLocal(){
     try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  },
+
+  /* Throw away this browser's copy and reload whatever is committed. */
+  async reloadFromFile(){
+    this.resetLocal();
+    this.participants = []; this.mocks = [];
+    return this.load();
   },
 
   participant(id){ return this.participants.find(p=>p.id===id); },
