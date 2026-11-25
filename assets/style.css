@@ -448,3 +448,8 @@ a.matlink:hover{border-color:var(--accent);background:var(--accent-soft)}
   th,td{padding:11px 12px}
   .hidesm{display:none}
 }
+
+/* Visually hidden but read by screen readers. Used for the mock log's
+   edit column, which needs no visible header. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}

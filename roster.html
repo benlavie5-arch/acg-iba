@@ -140,7 +140,7 @@
         <thead><tr>
           <th style="width:110px">Date</th><th>Member</th><th class="hidesm">Type</th>
           <th class="hidesm">Coach</th><th class="hidesm">Mix</th>
-          <th style="width:70px">Q</th><th style="width:80px">Result</th>
+          <th style="width:70px">Q</th><th style="width:80px">Result</th><th style="width:50px"><span class="sr-only">Edit</span></th>
         </tr></thead>
         <tbody id="mocklog"></tbody>
       </table>
@@ -302,7 +302,10 @@ function openProfile(id){
 
   const history=mocks.length? mocks.map(m=>{
     const covered=(m.answers||[]).length||Object.keys(m.scores||{}).length;
-    const del = ROLE==="coach" ? `<button class="btn btn-outline btn-sm" data-del="${m.id}" style="margin-top:11px">Delete</button>`:"";
+    const del = ROLE==="coach" ? `<div class="flex" style="margin-top:11px;gap:8px">
+        <button class="btn btn-outline btn-sm" data-edit="${m.id}">Edit</button>
+        <button class="btn btn-outline btn-sm" data-del="${m.id}">Delete</button>
+      </div>`:"";
 
     /* Every question asked, grouped by competency, worst score first so the
        gaps are the first thing you read. */
@@ -389,6 +392,10 @@ function openProfile(id){
     }
   });
 
+  document.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>{
+    logMockForm(null, b.dataset.edit);
+  }));
+
   document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
     if(b.dataset.armed){
       DB.deleteMock(b.dataset.del); closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
@@ -437,7 +444,7 @@ function renderLog(){
   if(f) rows=rows.filter(m=>m.participantId===f);
   const tb=document.getElementById("mocklog");
   if(!rows.length){
-    tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">No mocks logged yet.</td></tr>';
+    tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px">No mocks logged yet.</td></tr>';
   }else{
     tb.innerHTML=rows.map(m=>{
       const p=DB.participant(m.participantId);
@@ -459,9 +466,15 @@ function renderLog(){
         <td class="hidesm small">${esc(m.coach)||"n/a"}</td>
         <td class="hidesm">${mixHtml}${warn}</td>
         <td class="small">${(m.answers||[]).length||Object.keys(m.scores||{}).length}</td>
-        <td><span class="score ${scoreClass(v)}" style="font-size:1.1rem">${fmtScore(v)}</span></td>
+        <td><span class="score ${scoreClass(v)}" style="font-size:1.1rem">${fmtScore(v)}</span>${
+          m.editedAt?' <span class="pill" title="This mock was edited after it was first logged">edited</span>':""}</td>
+        ${ROLE==="coach"?`<td><button type="button" class="linklike" data-logedit="${esc(m.id)}">edit</button></td>`:""}
       </tr>`;
     }).join("");
+    tb.querySelectorAll("[data-logedit]").forEach(b=>b.addEventListener("click",e=>{
+      e.stopPropagation();
+      logMockForm(null,b.dataset.logedit);
+    }));
     tb.querySelectorAll("tr[data-id]").forEach(tr=>{
       const open=()=>openProfile(tr.dataset.id);
       tr.addEventListener("click",open);
@@ -480,9 +493,21 @@ function renderLog(){
    rather than decided while grading. Scores are five fixed bands. */
 let PICKED = [];
 
-function logMockForm(preselect){
-  PICKED = [];
-  const opts=DB.participants.map(p=>`<option value="${esc(p.id)}" ${p.id===preselect?"selected":""}>${esc(p.name)}</option>`).join("");
+function logMockForm(preselect, editId){
+  /* One form for both jobs. With an editId it opens pre-filled with everything
+     that was logged, so a wrong score is a two-click fix instead of a delete
+     and a full re-entry. */
+  const editing = editId ? DB.mock(editId) : null;
+  if(editId && !editing){ closeDrawer(); return; }
+
+  PICKED = editing
+    ? (editing.answers||[]).map(a=>({
+        id:a.questionId, text:a.text, competency:a.competency,
+        difficulty:a.difficulty, score:a.score }))
+    : [];
+
+  const sel = editing ? editing.participantId : preselect;
+  const opts=DB.participants.map(p=>`<option value="${esc(p.id)}" ${p.id===sel?"selected":""}>${esc(p.name)}</option>`).join("");
   const byComp=BANK.byCompetency();
   const picker=Object.entries(MODEL).map(([pk,p])=>
     Object.keys(p.subs).filter(k=>byComp[k]&&byComp[k].length).map(k=>`
@@ -493,18 +518,21 @@ function logMockForm(preselect){
       </details>`).join("")).join("");
 
   openDrawer(`
-    <h2 style="font-size:1.8rem;margin-bottom:6px">Log a mock</h2>
-    <p class="small">Pick the questions you asked, then score each one. Difficulty and competency come from the bank.</p>
+    <h2 style="font-size:1.8rem;margin-bottom:6px">${editing?"Edit mock":"Log a mock"}</h2>
+    <p class="small">${editing
+      ? "Change any score, remove a question, or add one you forgot. Saving replaces the logged mock and keeps its place in the recency order."
+      : "Pick the questions you asked, then score each one. Difficulty and competency come from the bank."}</p>
     <form id="mockForm" style="margin-top:20px">
       <div class="field"><label class="f">Member</label><select id="mkParticipant">${opts}</select></div>
       <div class="fieldrow">
-        <div class="field"><label class="f">Date</label><input type="date" id="mkDate" value="${new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label class="f">Date</label><input type="date" id="mkDate" value="${esc(editing?editing.date:new Date().toISOString().slice(0,10))}"></div>
         <div class="field"><label class="f">Coach</label>
-          <select id="mkCoach"><option>Andrew Vu</option><option>Ben Lavie</option></select></div>
+          <select id="mkCoach">${["Andrew Vu","Ben Lavie"].map(c=>
+            `<option ${editing&&editing.coach===c?"selected":""}>${c}</option>`).join("")}</select></div>
       </div>
       <div class="field"><label class="f">Mock type</label>
-        <select id="mkType"><option>Full mock</option><option>Technical screen</option>
-          <option>Behavioral</option><option>Markets / stock pitch</option><option>Superday sim</option></select></div>
+        <select id="mkType">${["Full mock","Technical screen","Behavioral","Markets / stock pitch","Superday sim"]
+          .map(t=>`<option ${editing&&editing.type===t?"selected":""}>${t}</option>`).join("")}</select></div>
 
       <label class="f" style="margin-top:20px">Add questions</label>
       <div class="qpicker">${picker||'<p class="small">Question bank not loaded.</p>'}</div>
@@ -516,9 +544,9 @@ function logMockForm(preselect){
       <div id="mkScored"><p class="small" style="color:var(--muted-light)">Pick a question above to start.</p></div>
 
       <div class="field" style="margin-top:22px"><label class="f">Notes</label>
-        <textarea id="mkNotes" placeholder="What went well, what to drill before the next session."></textarea></div>
+        <textarea id="mkNotes" placeholder="What went well, what to drill before the next session.">${esc(editing?(editing.notes||""):"")}</textarea></div>
       <div class="flex" style="margin-top:8px">
-        <button class="btn btn-primary" type="submit">Save mock</button>
+        <button class="btn btn-primary" type="submit">${editing?"Save changes":"Save mock"}</button>
         <button class="btn btn-outline" type="button" id="mkCancel">Cancel</button>
       </div>
       <p class="small" style="margin-top:14px">Saves to this browser. Use <b>Export roster.json</b> and commit so the cohort sees it.</p>
@@ -531,7 +559,9 @@ function logMockForm(preselect){
     renderScored();
   }));
   document.getElementById("mkCancel").addEventListener("click",closeDrawer);
-  document.getElementById("mockForm").addEventListener("submit",saveMock);
+  document.getElementById("mockForm").addEventListener("submit",
+    e=>saveMock(e, editing?editing.id:null));
+  renderScored();
 }
 
 function renderScored(){
@@ -567,7 +597,7 @@ function renderScored(){
     : "no questions yet";
 }
 
-function saveMock(e){
+function saveMock(e, editId){
   e.preventDefault();
   const answers=PICKED.filter(p=>p.score!==null)
     .map(p=>({questionId:p.id,text:p.text,competency:p.competency,difficulty:p.difficulty,score:p.score}));
@@ -579,14 +609,15 @@ function saveMock(e){
     w.scrollIntoView({behavior:"smooth",block:"center"});
     return;
   }
-  DB.addMock({
+  const payload={
     participantId:document.getElementById("mkParticipant").value,
     date:document.getElementById("mkDate").value,
     coach:document.getElementById("mkCoach").value,
     type:document.getElementById("mkType").value,
     notes:document.getElementById("mkNotes").value.trim(),
     answers
-  });
+  };
+  if(editId) DB.updateMock(editId,payload); else DB.addMock(payload);
   closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
 }
 

@@ -265,6 +265,19 @@ const DB = {
     return m;
   },
 
+  mock(id){ return this.mocks.find(m=>m.id===id) || null; },
+
+  /* Edits a logged mock in place. Keeps the id so the recency order and the
+     member's history stay the same, and records when it was last changed so a
+     corrected score is distinguishable from the original entry. */
+  updateMock(id, patch){
+    const m = this.mocks.find(x=>x.id===id);
+    if(!m) return null;
+    Object.assign(m, patch, { id:m.id, loggedAt:m.loggedAt, editedAt:new Date().toISOString() });
+    this.save();
+    return m;
+  },
+
   deleteMock(id){
     this.mocks = this.mocks.filter(m=>m.id!==id);
     this.save();
