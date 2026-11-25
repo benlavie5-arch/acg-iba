@@ -161,6 +161,12 @@ There is no database. Here's the loop:
 So: one of you should own committing. If you both log mocks in your own browsers without
 exporting, your two versions will diverge and whoever exports last wins.
 
+**Reload from file and Clear all are destructive.** Both throw away anything logged
+in this browser that has not been exported and committed. Both now ask for a second
+click first, and both stash a copy: if something is discarded, a **Restore** button
+appears in the portal strip until you use it or discard something else. Export after
+every logging session anyway - the browser copy is not a backup.
+
 **If the site shows the wrong data:** the strip at the top of Roster & Ratings says
 which copy you are looking at - this browser's saved copy, or the committed
 `roster.json`. Coaches get a **Reload from file** button that throws away the local

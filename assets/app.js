@@ -113,6 +113,7 @@ const BANK = { questions: [], loaded:false,
 };
 
 const STORAGE_KEY = "acgiba_data_v1";
+const BACKUP_KEY  = "acgiba_backup_v1";
 const ROLE_KEY    = "acgiba_role";
 
 /* ======================= 2. DATA LAYER ======================= */
@@ -151,6 +152,7 @@ const DB = {
     if(local && localStale){
       console.info("[acgiba] committed roster is newer (v"+seedVersion+
                    " > v"+localVersion+"); using it and clearing the local copy.");
+      this.backupLocal();     // recoverable if it held unexported work
     }
 
     if(localHasContent){
@@ -192,12 +194,49 @@ const DB = {
     }catch(e){ return false; }
   },
 
+  /* Stash whatever is in local storage before throwing it away, so a
+     mis-click on Reload or Clear can be undone. */
+  backupLocal(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const p=JSON.parse(raw);
+      if(!((p.participants||[]).length || (p.mocks||[]).length)) return false;
+      localStorage.setItem(BACKUP_KEY, JSON.stringify({...p, discardedAt:new Date().toISOString()}));
+      return true;
+    }catch(e){ return false; }
+  },
+
+  backupInfo(){
+    try{
+      const raw=localStorage.getItem(BACKUP_KEY);
+      if(!raw) return null;
+      const p=JSON.parse(raw);
+      return { participants:(p.participants||[]).length, mocks:(p.mocks||[]).length,
+               discardedAt:p.discardedAt };
+    }catch(e){ return null; }
+  },
+
+  restoreBackup(){
+    try{
+      const raw=localStorage.getItem(BACKUP_KEY);
+      if(!raw) return false;
+      const p=JSON.parse(raw);
+      this.participants=p.participants||[]; this.mocks=p.mocks||[];
+      this.save();
+      localStorage.removeItem(BACKUP_KEY);
+      this.source="local";
+      return true;
+    }catch(e){ return false; }
+  },
+
   resetLocal(){
     try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
   },
 
   /* Throw away this browser's copy and reload whatever is committed. */
   async reloadFromFile(){
+    this.backupLocal();
     this.resetLocal();
     this.participants = []; this.mocks = [];
     return this.load();
@@ -244,6 +283,7 @@ const DB = {
 
   /* Wipe everything and fall back to whatever is committed in roster.json. */
   clearAll(){
+    this.backupLocal();
     this.participants = [];
     this.mocks = [];
     this.save();

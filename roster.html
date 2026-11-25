@@ -192,11 +192,21 @@ function renderWhoAmI(){
   const badge = ROLE==="coach"
     ? '<span class="pill coach">Coach access</span>'
     : '<span class="pill">Member access (view only)</span>';
+  const bk=DB.backupInfo();
+  const restore = bk
+    ? ` <button type="button" class="btn btn-outline btn-sm" id="btnRestore" style="margin-left:4px">`
+      + `Restore ${bk.mocks} discarded mock${bk.mocks===1?"":"s"}</button>` : "";
   const local = DB.source==="local"
     ? ' <span class="pill down">Showing this browser\'s copy, not the committed file. Export to commit.</span>'
     : ' <span class="pill">Showing the committed roster.json</span>';
-  el.innerHTML = badge + local +
+  el.innerHTML = badge + local + restore +
     ' <button type="button" id="signout" class="linklike">Sign out</button>';
+  const rb=document.getElementById("btnRestore");
+  if(rb) rb.addEventListener("click",()=>{
+    if(DB.restoreBackup()){
+      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+    }
+  });
   document.getElementById("signout").addEventListener("click",signOut);
 }
 
@@ -652,10 +662,22 @@ function wireControls(){
     document.getElementById("btnAddMember").addEventListener("click",addMemberForm);
     const br=document.getElementById("btnReload");
     br.addEventListener("click",async ()=>{
+      /* This throws away anything logged in this browser and not yet
+         exported. Confirm when there is something to lose. */
+      if(DB.source==="local" && !br.dataset.armed){
+        br.dataset.armed="1";
+        br.textContent="Discards unexported work - click again";
+        br.style.borderColor="var(--bad)"; br.style.color="var(--bad)";
+        setTimeout(()=>{ if(br.isConnected){ delete br.dataset.armed;
+          br.textContent="Reload from file"; br.style.borderColor=""; br.style.color=""; } },5000);
+        return;
+      }
+      delete br.dataset.armed;
       br.disabled=true; br.textContent="Reloading...";
       await DB.reloadFromFile();
       buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
       br.disabled=false; br.textContent="Reload from file";
+      br.style.borderColor=""; br.style.color="";
     });
 
     const bc=document.getElementById("btnClear");
