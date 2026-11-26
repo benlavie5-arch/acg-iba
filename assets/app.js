@@ -185,6 +185,43 @@ const DB = {
     }
   },
 
+  /* ---------- publishing ----------
+     Commits data/roster.json straight to the repo through the GitHub API, so
+     logging a mock and the cohort seeing it are one action instead of export,
+     download, commit. The token is a fine-grained PAT scoped to this one repo
+     with Contents: read and write. It is held in this browser only: never in
+     the repo, never sent anywhere but api.github.com. */
+  publishPayload(){
+    return {
+      version: (Number(this.version)||0) + 1,
+      updated: new Date().toISOString(),
+      participants: this.participants,
+      mocks: this.mocks
+    };
+  },
+
+  /* Unpublished means the local copy has moved past what is committed. */
+  unpublishedCount(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return 0;
+      const p=JSON.parse(raw);
+      if(p.publishedAt && p.publishedVersion===this.version) return 0;
+      return (p.mocks||[]).length ? (p.mocks||[]).length : 0;
+    }catch(e){ return 0; }
+  },
+
+  markPublished(version){
+    this.version = version;
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      const p = raw?JSON.parse(raw):{};
+      p.baseVersion=version; p.publishedVersion=version;
+      p.publishedAt=new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(p));
+    }catch(e){}
+  },
+
   hasLocalEdits(){
     try{
       const raw=localStorage.getItem(STORAGE_KEY);
@@ -620,3 +657,93 @@ function closeDrawer(){
 }
 
 document.addEventListener("DOMContentLoaded", initNav);
+
+
+/* ---------------------------------------------------------------
+   GitHub publishing
+   The token lives in this browser's localStorage under its own key, kept
+   apart from the roster so exporting or clearing the roster never carries it
+   along. Scope it to this repo with Contents: read and write and nothing
+   else, so the worst case if it leaks is an unwanted commit here.
+   --------------------------------------------------------------- */
+const GH = {
+  OWNER: "benlavie5-arch",
+  REPO:  "acg-iba",
+  PATH:  "data/roster.json",
+  BRANCH:"main",
+  TOKEN_KEY: "acgiba_gh_token",
+
+  token(){ try{ return localStorage.getItem(this.TOKEN_KEY)||""; }catch(e){ return ""; } },
+  hasToken(){ return !!this.token(); },
+  setToken(t){ try{ localStorage.setItem(this.TOKEN_KEY,(t||"").trim()); return true; }catch(e){ return false; } },
+  forgetToken(){ try{ localStorage.removeItem(this.TOKEN_KEY); }catch(e){} },
+
+  headers(){
+    return {
+      "Authorization":"Bearer "+this.token(),
+      "Accept":"application/vnd.github+json",
+      "X-GitHub-Api-Version":"2022-11-28"
+    };
+  },
+
+  apiUrl(){
+    return `https://api.github.com/repos/${this.OWNER}/${this.REPO}/contents/${this.PATH}`;
+  },
+
+  /* base64 of UTF-8. btoa alone mangles any non-ASCII character, which would
+     corrupt a member name or a note the moment one appeared. */
+  b64(str){
+    const bytes = new TextEncoder().encode(str);
+    let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b));
+    return btoa(bin);
+  },
+
+  async currentSha(){
+    const r = await fetch(this.apiUrl()+"?ref="+this.BRANCH+"&t="+Date.now(),
+                          {headers:this.headers(), cache:"no-store"});
+    if(r.status===404) return null;          // first publish
+    if(!r.ok) throw new Error(await this.explain(r));
+    const j = await r.json();
+    return j.sha;
+  },
+
+  async explain(r){
+    let detail="";
+    try{ const j=await r.json(); detail=j.message||""; }catch(e){}
+    if(r.status===401) return "Token rejected. It may be wrong, revoked or expired.";
+    if(r.status===403) return "Token lacks permission. It needs Contents: read and write on this repo.";
+    if(r.status===404) return "Repo or file path not found, or the token cannot see this repo.";
+    if(r.status===409) return "Someone else changed the file. Reload the page and publish again.";
+    if(r.status===422) return "GitHub rejected the commit. "+detail;
+    return "GitHub error "+r.status+(detail?": "+detail:"");
+  },
+
+  /* Returns the new version number on success. */
+  async publish(payload, message){
+    if(!this.hasToken()) throw new Error("No token saved.");
+    const sha = await this.currentSha();
+    const body = {
+      message: message || "Update roster from the coach portal",
+      content: this.b64(JSON.stringify(payload,null,2)+"\n"),
+      branch: this.BRANCH
+    };
+    if(sha) body.sha = sha;
+    const r = await fetch(this.apiUrl(), {
+      method:"PUT", headers:{...this.headers(),"Content-Type":"application/json"},
+      body: JSON.stringify(body)
+    });
+    if(!r.ok) throw new Error(await this.explain(r));
+    return payload.version;
+  },
+
+  /* Cheap check that a pasted token actually works before it is relied on. */
+  async verify(){
+    const r = await fetch(`https://api.github.com/repos/${this.OWNER}/${this.REPO}`,
+                          {headers:this.headers()});
+    if(!r.ok) throw new Error(await this.explain(r));
+    const j = await r.json();
+    if(!j.permissions || !j.permissions.push)
+      throw new Error("Token can read this repo but not write to it. Set Contents to read and write.");
+    return true;
+  }
+};

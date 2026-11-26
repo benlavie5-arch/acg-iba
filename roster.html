@@ -59,10 +59,12 @@
       <div class="flex" id="coachTools" style="display:none">
         <button class="btn btn-outline btn-sm" id="btnAddMember">+ Member</button>
         <button class="btn btn-primary btn-sm" id="btnLogMock">Log a mock</button>
+        <button class="btn btn-primary btn-sm" id="btnPublish">Publish to site</button>
         <button class="btn btn-outline btn-sm" id="btnExport">Export roster.json</button>
         <button class="btn btn-outline btn-sm" id="btnReload">Reload from file</button>
         <button class="btn btn-outline btn-sm" id="btnClear">Clear all</button>
       </div>
+      <div id="pubState" class="note" style="display:none;margin-top:14px"></div>
     </div>
 
     <div class="tablewrap">
@@ -204,7 +206,7 @@ function renderWhoAmI(){
   const rb=document.getElementById("btnRestore");
   if(rb) rb.addEventListener("click",()=>{
     if(DB.restoreBackup()){
-      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
     }
   });
   document.getElementById("signout").addEventListener("click",signOut);
@@ -382,7 +384,7 @@ function openProfile(id){
   if(dm) dm.addEventListener("click",()=>{
     if(dm.dataset.armed){
       const n=DB.deleteParticipant(dm.dataset.delmember);
-      closeDrawer(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+      closeDrawer(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
     }else{
       dm.dataset.armed="1";
       dm.textContent="Click again to permanently delete";
@@ -398,7 +400,7 @@ function openProfile(id){
 
   document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
     if(b.dataset.armed){
-      DB.deleteMock(b.dataset.del); closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+      DB.deleteMock(b.dataset.del); closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
     }else{
       b.dataset.armed="1";
       b.textContent="Click again to confirm delete";
@@ -618,7 +620,7 @@ function saveMock(e, editId){
     answers
   };
   if(editId) DB.updateMock(editId,payload); else DB.addMock(payload);
-  closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+  closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
 }
 
 /* ---------- coach: add member ---------- */
@@ -656,12 +658,104 @@ function addMemberForm(){
       note:document.getElementById("amNote").value.trim(),
       joined:new Date().toISOString().slice(0,10)
     });
-    closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+    closeDrawer(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
   });
 }
 
 /* Downloads are blocked in sandboxed previews (they work on GitHub Pages).
    Always offer a copyable copy of the same JSON as a fallback. */
+/* ---------- publishing to the repo ---------- */
+
+function renderPubState(){
+  const host=document.getElementById("pubState");
+  if(!host || ROLE!=="coach") return;
+  if(!GH.hasToken()){
+    host.style.display="";
+    host.innerHTML='<b>Publishing is not set up.</b> Changes you make stay in this browser '+
+      'until you add a GitHub token. <button type="button" class="linklike" id="pubSetup">Set it up</button>';
+    const b=document.getElementById("pubSetup");
+    if(b) b.addEventListener("click",tokenForm);
+    return;
+  }
+  const n=DB.unpublishedCount();
+  if(!n){ host.style.display="none"; host.innerHTML=""; return; }
+  host.style.display="";
+  host.innerHTML=`<b>${n} mock${n===1?"":"s"} not published yet.</b> `+
+    `Only this browser can see your latest changes. Click <b>Publish to site</b> so the cohort sees them.`;
+}
+
+function tokenForm(){
+  openDrawer(`
+    <h2 style="font-size:1.8rem;margin-bottom:8px">Set up publishing</h2>
+    <p class="small">Paste the fine-grained GitHub token you generated. It is stored in this
+      browser only. It never goes into the repo and is never sent anywhere except GitHub.</p>
+    <div class="note" style="margin:16px 0">
+      The token must be scoped to <span class="mono">${esc(GH.OWNER)}/${esc(GH.REPO)}</span>
+      with <b>Contents: read and write</b>. Anyone with this token can commit to that repo,
+      so do not paste it into a shared machine, and revoke it in GitHub settings if it leaks.
+    </div>
+    <form id="tokForm">
+      <div class="field"><label class="f">GitHub token</label>
+        <input type="password" id="tokVal" autocomplete="off" spellcheck="false"
+               placeholder="github_pat_..." required></div>
+      <div class="flex" style="margin-top:8px">
+        <button class="btn btn-primary" type="submit">Save and test</button>
+        <button class="btn btn-outline" type="button" id="tokCancel">Cancel</button>
+      </div>
+      <div id="tokMsg" style="margin-top:14px"></div>
+    </form>
+    ${GH.hasToken()?`<hr style="margin:26px 0;border:none;border-top:1px solid var(--line)">
+      <button class="btn btn-outline btn-sm" id="tokForget">Remove saved token</button>`:""}`);
+
+  document.getElementById("tokCancel").addEventListener("click",closeDrawer);
+  const fg=document.getElementById("tokForget");
+  if(fg) fg.addEventListener("click",()=>{ GH.forgetToken(); closeDrawer(); renderPubState(); });
+
+  document.getElementById("tokForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const msg=document.getElementById("tokMsg");
+    const val=document.getElementById("tokVal").value.trim();
+    if(!val) return;
+    msg.innerHTML='<p class="small">Testing the token...</p>';
+    GH.setToken(val);
+    try{
+      await GH.verify();
+      msg.innerHTML='<div class="note"><b>Token works.</b> Publishing is ready.</div>';
+      setTimeout(()=>{ closeDrawer(); renderPubState(); },900);
+    }catch(err){
+      GH.forgetToken();
+      msg.innerHTML=`<div class="note" style="border-color:var(--bad)"><b>That did not work.</b> ${esc(err.message)}</div>`;
+    }
+  });
+}
+
+async function doPublish(){
+  const btn=document.getElementById("btnPublish");
+  const host=document.getElementById("pubState");
+  const was=btn.textContent;
+  btn.disabled=true; btn.textContent="Publishing...";
+  host.style.display=""; host.innerHTML='<p class="small">Committing to GitHub...</p>';
+  try{
+    const payload=DB.publishPayload();
+    const n=(payload.mocks||[]).length, m=(payload.participants||[]).length;
+    const v=await GH.publish(payload,
+      `Roster update from the portal: ${m} member${m===1?"":"s"}, ${n} mock${n===1?"":"s"}`);
+    DB.markPublished(v);
+    host.innerHTML='<b>Published.</b> GitHub Pages rebuilds in about a minute, '+
+      'then everyone sees this. Nothing is left sitting only in this browser.';
+    setTimeout(renderPubState, 9000);
+  }catch(err){
+    host.innerHTML=`<div style="color:var(--bad)"><b>Publish failed.</b> ${esc(err.message)}</div>`+
+      `<p class="small" style="margin-top:8px">Your work is safe in this browser. `+
+      `<button type="button" class="linklike" id="pubRetry">Try again</button> or `+
+      `<button type="button" class="linklike" id="pubToken">check the token</button>.</p>`;
+    const r=document.getElementById("pubRetry"); if(r) r.addEventListener("click",doPublish);
+    const t=document.getElementById("pubToken"); if(t) t.addEventListener("click",tokenForm);
+  }finally{
+    btn.disabled=false; btn.textContent=was;
+  }
+}
+
 function showExportFallback(){
   const payload={
     _comment:"ACG IBA roster + mock log. Commit this file to data/roster.json in the GitHub repo.",
@@ -706,7 +800,7 @@ function wireControls(){
       delete br.dataset.armed;
       br.disabled=true; br.textContent="Reloading...";
       await DB.reloadFromFile();
-      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+      buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
       br.disabled=false; br.textContent="Reload from file";
       br.style.borderColor=""; br.style.color="";
     });
@@ -714,7 +808,7 @@ function wireControls(){
     const bc=document.getElementById("btnClear");
     bc.addEventListener("click",()=>{
       if(bc.dataset.armed){
-        DB.clearAll(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI();
+        DB.clearAll(); buildCohortFilter(); buildLogFilter(); renderBoard(); renderLog(); renderWhoAmI(); renderPubState();
         bc.textContent="Clear all"; delete bc.dataset.armed;
         bc.style.borderColor=""; bc.style.color="";
       }else{
@@ -725,6 +819,12 @@ function wireControls(){
           bc.textContent="Clear all"; bc.style.borderColor=""; bc.style.color=""; } },4000);
       }
     });
+
+    /* ---------- publish ---------- */
+    document.getElementById("btnPublish").addEventListener("click",()=>{
+      if(!GH.hasToken()) tokenForm(); else doPublish();
+    });
+    renderPubState();
 
     document.getElementById("btnExport").addEventListener("click",()=>{
       try{ DB.exportJSON(); }catch(e){ showExportFallback(); return; }
