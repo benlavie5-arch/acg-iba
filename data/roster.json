@@ -1,6 +1,6 @@
 {
-  "_comment": "Roster and mock log. Bump 'version' whenever you commit new data here: any browser holding an older copy will drop it and take this file instead.",
-  "version": 14,
+  "version": 15,
+  "updated": "2026-11-26T05:15:52.562Z",
   "participants": [
     {
       "id": "p_yahil",
@@ -21,6 +21,16 @@
       "track": "",
       "note": "Surname and details to be filled in.",
       "joined": "2026-11-22"
+    },
+    {
+      "name": "Ian",
+      "school": "UTSA",
+      "gradYear": 2029,
+      "cohort": "",
+      "track": "",
+      "note": "",
+      "joined": "2026-11-25",
+      "id": "p_cx0c3t1"
     }
   ],
   "mocks": [
@@ -423,6 +433,179 @@
         }
       ],
       "loggedAt": "2026-11-22T21:13:00Z"
+    },
+    {
+      "participantId": "p_cx0c3t1",
+      "date": "2026-11-25",
+      "coach": "Ben Lavie",
+      "type": "Full mock",
+      "notes": "",
+      "answers": [
+        {
+          "questionId": "q01",
+          "text": "Walk me through the income statement",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q500",
+          "text": "What's the income statement?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 10
+        },
+        {
+          "questionId": "q05",
+          "text": "Which statement is most important, and why?",
+          "competency": "accounting",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q06",
+          "text": "What's the problem with the balance sheet?",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 7.5
+        },
+        {
+          "questionId": "q13",
+          "text": "Depreciation increases by 10 - walk me through it",
+          "competency": "accounting",
+          "difficulty": "M",
+          "score": 7.5
+        },
+        {
+          "questionId": "q16",
+          "text": "What's the formula for present value?",
+          "competency": "corpfin",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q18",
+          "text": "How do you calculate WACC?",
+          "competency": "corpfin",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q089",
+          "text": "What's a discount rate, in plain terms?",
+          "competency": "corpfin",
+          "difficulty": "E",
+          "score": 2.5
+        },
+        {
+          "questionId": "q143",
+          "text": "What's a bond?",
+          "competency": "bonds",
+          "difficulty": "E",
+          "score": 0
+        },
+        {
+          "questionId": "q154",
+          "text": "Why do companies acquire other companies?",
+          "competency": "mna",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q156",
+          "text": "What are synergies, and what types are there?",
+          "competency": "mna",
+          "difficulty": "M",
+          "score": 5
+        },
+        {
+          "questionId": "q30",
+          "text": "Bridge equity value to enterprise value",
+          "competency": "ev",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q499",
+          "text": "Give me five more items that belong in the enterprise value bridge",
+          "competency": "ev",
+          "difficulty": "H",
+          "score": 2.5
+        },
+        {
+          "questionId": "q25",
+          "text": "What's the discount rate?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 2.5
+        },
+        {
+          "questionId": "q23",
+          "text": "What's a DCF?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 5
+        },
+        {
+          "questionId": "q24",
+          "text": "What's unlevered free cash flow?",
+          "competency": "dcf",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q105",
+          "text": "Walk me through the steps of a DCF.",
+          "competency": "dcf",
+          "difficulty": "M",
+          "score": 10
+        },
+        {
+          "questionId": "q104",
+          "text": "Why do we discount future cash flows?",
+          "competency": "dcf",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q42",
+          "text": "Tell me about yourself",
+          "competency": "stories",
+          "difficulty": "E",
+          "score": 7.5
+        },
+        {
+          "questionId": "q206",
+          "text": "Brainteaser: three jars, one labelled candy, one labelled chocolate, one labelled mixed. All three labels are wrong. You may draw one item from one jar. Which jar do you draw from, and how do you relabel all three?",
+          "competency": "puzzles",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q51",
+          "text": "CPI or PCE - which matters more, and why?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 0
+        },
+        {
+          "questionId": "q305",
+          "text": "Can shareholders' equity be negative? How?",
+          "competency": "accounting",
+          "difficulty": "H",
+          "score": 7.5
+        },
+        {
+          "questionId": "q211",
+          "text": "What's PCE, and why does the Fed prefer it?",
+          "competency": "market",
+          "difficulty": "M",
+          "score": 5
+        }
+      ],
+      "id": "m_30vzazu",
+      "loggedAt": "2026-11-25T23:04:48.100Z",
+      "editedAt": "2026-11-25T23:16:29.386Z"
     }
   ]
 }
