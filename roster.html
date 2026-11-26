@@ -716,6 +716,11 @@ function tokenForm(){
     const msg=document.getElementById("tokMsg");
     const val=document.getElementById("tokVal").value.trim();
     if(!val) return;
+    const bad=GH.checkFormat(val);
+    if(bad){
+      msg.innerHTML=`<div class="note" style="border-color:var(--bad)"><b>That is not the token.</b> ${esc(bad)}</div>`;
+      return;
+    }
     msg.innerHTML='<p class="small">Testing the token...</p>';
     GH.setToken(val);
     try{

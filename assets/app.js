@@ -674,6 +674,27 @@ const GH = {
   TOKEN_KEY: "acgiba_gh_token",
 
   token(){ try{ return localStorage.getItem(this.TOKEN_KEY)||""; }catch(e){ return ""; } },
+
+  /* Catches the common paste mistakes before spending a round trip on GitHub,
+     which answers all of them with the same unhelpful 401. */
+  checkFormat(raw){
+    const t=(raw||"").trim();
+    if(!t) return "Nothing pasted.";
+    if(/^\d+$/.test(t))
+      return "That looks like the token's ID number from the address bar, not the token itself.";
+    if(/^https?:\/\//.test(t))
+      return "That is a URL, not the token.";
+    if(/^acg-iba/i.test(t))
+      return "That is the token's name, not the token. The token is a long string starting with github_pat_.";
+    if(/\s/.test(t))
+      return "That contains a space or line break, so part of the copy went wrong. Copy it again in one go.";
+    if(!/^(github_pat_|ghp_)/.test(t))
+      return "A GitHub token starts with github_pat_ (fine-grained) or ghp_ (classic). This starts with \"" +
+             t.slice(0,8).replace(/[<>&"]/g,"") + "...\".";
+    if(/^github_pat_/.test(t) && t.length < 60)
+      return "That is too short for a fine-grained token, so the copy was cut off. Copy the whole string.";
+    return null;      // looks plausible; let GitHub be the judge
+  },
   hasToken(){ return !!this.token(); },
   setToken(t){ try{ localStorage.setItem(this.TOKEN_KEY,(t||"").trim()); return true; }catch(e){ return false; } },
   forgetToken(){ try{ localStorage.removeItem(this.TOKEN_KEY); }catch(e){} },
