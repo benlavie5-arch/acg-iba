@@ -728,10 +728,25 @@ const GH = {
     return j.sha;
   },
 
+  /* Describes the saved token without revealing it, so a failure can be
+     diagnosed without the value ever being read out or pasted anywhere. */
+  tokenShape(){
+    const t=this.token();
+    if(!t) return "none saved";
+    const kind = t.startsWith("github_pat_") ? "fine-grained"
+               : t.startsWith("ghp_") ? "classic" : "unrecognised prefix";
+    return `${kind}, ${t.length} characters, ends ...${t.slice(-4)}`;
+  },
+
   async explain(r){
     let detail="";
     try{ const j=await r.json(); detail=j.message||""; }catch(e){}
-    if(r.status===401) return "Token rejected. It may be wrong, revoked or expired.";
+    if(r.status===401) return "Token rejected by GitHub (401). "+
+      (detail?`GitHub said: "${detail}". `:"")+
+      `The saved token is ${this.tokenShape()}. `+
+      "A fine-grained token is normally 90 or more characters. If yours is much shorter, "+
+      "the copy was cut off. If the length looks right, the token may have been revoked, "+
+      "or this browser may be stripping the authorization header.";
     if(r.status===403) return "Token lacks permission. It needs Contents: read and write on this repo.";
     if(r.status===404) return "Repo or file path not found, or the token cannot see this repo.";
     if(r.status===409) return "Someone else changed the file. Reload the page and publish again.";
@@ -755,6 +770,47 @@ const GH = {
     });
     if(!r.ok) throw new Error(await this.explain(r));
     return payload.version;
+  },
+
+  /* Walks the request from the outside in: does GitHub answer at all, does it
+     recognise the token, does the token see the repo, can it write. Each step
+     fails differently, which is what tells you where the problem is. */
+  async diagnose(){
+    const steps=[];
+    const add=(n,ok,note)=>steps.push({step:n,ok,note:note||""});
+
+    add("token saved", this.hasToken(), this.tokenShape());
+    if(!this.hasToken()) return steps;
+
+    try{
+      const r=await fetch("https://api.github.com/rate_limit");
+      add("github reachable", r.ok, "status "+r.status);
+    }catch(e){ add("github reachable", false, e.message); return steps; }
+
+    try{
+      const r=await fetch("https://api.github.com/user",{headers:this.headers()});
+      if(r.ok){ const j=await r.json(); add("token recognised", true, "acting as "+(j.login||"?")); }
+      else{
+        let d=""; try{ d=(await r.json()).message||""; }catch(e){}
+        add("token recognised", false, "status "+r.status+(d?" - "+d:""));
+      }
+    }catch(e){ add("token recognised", false, e.message); }
+
+    try{
+      const r=await fetch(`https://api.github.com/repos/${this.OWNER}/${this.REPO}`,
+                          {headers:this.headers()});
+      if(r.ok){
+        const j=await r.json();
+        add("repo visible", true, j.full_name);
+        add("write permission", !!(j.permissions&&j.permissions.push),
+            j.permissions?("push="+j.permissions.push):"no permissions field");
+      }else{
+        let d=""; try{ d=(await r.json()).message||""; }catch(e){}
+        add("repo visible", false, "status "+r.status+(d?" - "+d:""));
+      }
+    }catch(e){ add("repo visible", false, e.message); }
+
+    return steps;
   },
 
   /* Cheap check that a pasted token actually works before it is relied on. */

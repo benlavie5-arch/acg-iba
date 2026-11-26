@@ -729,7 +729,20 @@ function tokenForm(){
       setTimeout(()=>{ closeDrawer(); renderPubState(); },900);
     }catch(err){
       GH.forgetToken();
-      msg.innerHTML=`<div class="note" style="border-color:var(--bad)"><b>That did not work.</b> ${esc(err.message)}</div>`;
+      msg.innerHTML=`<div class="note" style="border-color:var(--bad)"><b>That did not work.</b> ${esc(err.message)}</div>`+
+        `<button type="button" class="btn btn-outline btn-sm" id="tokDiag" style="margin-top:12px">Run diagnostic</button>`+
+        `<div id="tokDiagOut"></div>`;
+      document.getElementById("tokDiag").addEventListener("click",async ()=>{
+        const out=document.getElementById("tokDiagOut");
+        out.innerHTML='<p class="small">Checking...</p>';
+        GH.setToken(val);                       // put it back for the duration of the test
+        const steps=await GH.diagnose();
+        GH.forgetToken();
+        out.innerHTML=`<div class="note" style="margin-top:12px"><b>Diagnostic</b>`+
+          steps.map(s=>`<div class="small" style="margin-top:6px">`+
+            `${s.ok?"OK":"FAILED"} &middot; ${esc(s.step)}${s.note?" &middot; "+esc(s.note):""}</div>`).join("")+
+          `<p class="small" style="margin-top:10px">Send these lines to Claude. They contain no part of the token.</p></div>`;
+      });
     }
   });
 }
