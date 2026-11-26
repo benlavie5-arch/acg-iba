@@ -142,30 +142,38 @@ const DB = {
        data/roster.json carries a version; a local copy records the version it
        was based on. When the committed file moves ahead, it wins, so data
        pushed to the repo reaches browsers that already hold a local copy. */
-    const seedVersion = Number(seed.version||0);
+    const seedVersion  = Number(seed.version||0);
     const localVersion = Number((local&&local.baseVersion)||0);
-    const localStale = seedVersion > localVersion;
-
     const localHasContent = local &&
-      ((local.participants||[]).length || (local.mocks||[]).length) && !localStale;
+      ((local.participants||[]).length || (local.mocks||[]).length);
 
-    if(local && localStale){
-      console.info("[acgiba] committed roster is newer (v"+seedVersion+
-                   " > v"+localVersion+"); using it and clearing the local copy.");
-      this.backupLocal();     // recoverable if it held unexported work
-    }
-
+    /* Committed and local are merged rather than one replacing the other.
+       Previously the newer of the two won outright, so a coach with
+       unpublished mocks lost them to a backup the moment another coach
+       published. Merging by id keeps both sides. */
     if(localHasContent){
-      this.participants = local.participants || [];
-      this.mocks        = local.mocks || [];
-      this.source = "local";
-      this.version = localVersion;
+      const merged = mergeRosters(seed, {
+        version: localVersion,
+        participants: local.participants || [],
+        mocks: local.mocks || [],
+        deleted: local.deleted || {mocks:[], participants:[]}
+      });
+      this.participants = merged.participants;
+      this.mocks        = merged.mocks;
+      this.deleted      = merged.deleted;
+      this.version      = Math.max(seedVersion, localVersion);
+      this.source       = (seedVersion > localVersion) ? "merged" : "local";
+
+      const gained = merged.mocks.length - (local.mocks||[]).length;
+      if(gained > 0)
+        console.info(`[acgiba] merged in ${gained} mock(s) from the committed roster.`);
     }else{
       this.participants = seed.participants || [];
       this.mocks        = seed.mocks || [];
-      this.source = "committed";
+      this.deleted      = seed.deleted || {mocks:[], participants:[]};
+      this.source  = "committed";
       this.version = seedVersion;
-      if(local) this.resetLocal();     // stop a stale or empty copy from masking
+      if(local) this.resetLocal();     // an empty local copy must not mask the file
     }
     this.loaded = true;
     return this;
@@ -175,6 +183,7 @@ const DB = {
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         participants:this.participants, mocks:this.mocks,
+        deleted:this.deleted||{mocks:[],participants:[]},
         baseVersion:this.version||0,
         savedAt:new Date().toISOString()
       }));
@@ -196,7 +205,8 @@ const DB = {
       version: (Number(this.version)||0) + 1,
       updated: new Date().toISOString(),
       participants: this.participants,
-      mocks: this.mocks
+      mocks: this.mocks,
+      deleted: this.deleted || {mocks:[], participants:[]}
     };
   },
 
@@ -315,8 +325,18 @@ const DB = {
     return m;
   },
 
+  /* A merge is additive, so a record simply missing from one copy means
+     "not seen yet", not "removed". Deletions are therefore recorded, not
+     implied, or the other coach's copy would resurrect them on publish. */
+  tombstone(kind, id){
+    this.deleted = this.deleted || {mocks:[], participants:[]};
+    const list = this.deleted[kind] = this.deleted[kind] || [];
+    if(!list.some(t=>t.id===id)) list.push({id, at:new Date().toISOString()});
+  },
+
   deleteMock(id){
     this.mocks = this.mocks.filter(m=>m.id!==id);
+    this.tombstone("mocks", id);
     this.save();
   },
 
@@ -324,9 +344,12 @@ const DB = {
      would keep inflating the logged-mock count and could resurrect a profile
      if the same id were ever reused. */
   deleteParticipant(id){
-    const removed = this.mocks.filter(m=>m.participantId===id).length;
+    const doomed  = this.mocks.filter(m=>m.participantId===id);
+    const removed = doomed.length;
     this.participants = this.participants.filter(p=>p.id!==id);
     this.mocks        = this.mocks.filter(m=>m.participantId!==id);
+    this.tombstone("participants", id);
+    doomed.forEach(m=>this.tombstone("mocks", m.id));
     this.save();
     return removed;
   },
@@ -666,6 +689,93 @@ document.addEventListener("DOMContentLoaded", initNav);
    along. Scope it to this repo with Contents: read and write and nothing
    else, so the worst case if it leaks is an unwanted commit here.
    --------------------------------------------------------------- */
+/* ---------------------------------------------------------------
+   Merging two copies of the roster.
+
+   Each coach's browser holds a whole roster, so publishing used to mean
+   "replace the file with mine", and whoever published last erased the
+   other's mocks. Mocks and members already carry unique ids, so the two
+   copies combine by id instead: different ids both survive, and the same
+   id is resolved by which copy was touched most recently.
+
+   Deliberately additive. A record missing from one side is treated as
+   not-yet-seen, never as deleted, because a coach whose browser never
+   loaded a mock would otherwise delete it by publishing. Removing someone
+   is therefore done once, in the committed file, not by omission.
+   --------------------------------------------------------------- */
+function recordTime(r){
+  return Date.parse(r && (r.editedAt || r.loggedAt || r.updatedAt || r.createdAt)) || 0;
+}
+
+function mergeById(remote, local){
+  const out = new Map();
+  (remote||[]).forEach(r=>{ if(r && r.id) out.set(r.id, r); });
+  (local||[]).forEach(l=>{
+    if(!l || !l.id) return;
+    const r = out.get(l.id);
+    if(!r){ out.set(l.id, l); return; }
+    /* Same record on both sides: the more recently touched copy wins. Ties
+       go to the remote copy, so a republish of unchanged data is a no-op. */
+    out.set(l.id, recordTime(l) > recordTime(r) ? l : r);
+  });
+  return [...out.values()];
+}
+
+/* Tombstones from both copies, newest entry per id. */
+function mergeTombstones(a, b){
+  const out=new Map();
+  [...(a||[]), ...(b||[])].forEach(t=>{
+    if(!t || !t.id) return;
+    const prev=out.get(t.id);
+    if(!prev || Date.parse(t.at||0) > Date.parse(prev.at||0)) out.set(t.id, t);
+  });
+  return [...out.values()];
+}
+
+/* A deletion wins over a copy that still holds the record, unless that copy
+   was edited after the deletion was made - in which case the coach was
+   working on it later and the edit is the more recent intent. */
+function applyTombstones(records, tombs){
+  if(!tombs || !tombs.length) return records;
+  const byId=new Map(tombs.map(t=>[t.id,t]));
+  return records.filter(r=>{
+    const t=byId.get(r.id);
+    if(!t) return true;
+    return recordTime(r) > (Date.parse(t.at||0)||0);
+  });
+}
+
+function mergeRosters(remote, local){
+  if(!remote) return local;
+
+  const deleted = {
+    mocks:        mergeTombstones(remote.deleted&&remote.deleted.mocks,
+                                  local.deleted&&local.deleted.mocks),
+    participants: mergeTombstones(remote.deleted&&remote.deleted.participants,
+                                  local.deleted&&local.deleted.participants)
+  };
+
+  let participants = applyTombstones(
+    mergeById(remote.participants, local.participants), deleted.participants);
+
+  let mocks = applyTombstones(
+    mergeById(remote.mocks, local.mocks), deleted.mocks);
+
+  /* A mock whose member is gone has nothing to attach to and would keep
+     inflating counts, so it goes with them. */
+  const live = new Set(participants.map(p=>p.id));
+  mocks = mocks.filter(m=>live.has(m.participantId))
+               .sort((a,b)=> new Date(a.date||0) - new Date(b.date||0));
+
+  return {
+    version: Math.max(Number(remote.version)||0, Number(local.version)||0) + 1,
+    updated: new Date().toISOString(),
+    participants,
+    mocks,
+    deleted
+  };
+}
+
 const GH = {
   OWNER: "benlavie5-arch",
   REPO:  "acg-iba",
@@ -755,21 +865,49 @@ const GH = {
   },
 
   /* Returns the new version number on success. */
+  /* Reads the committed file alongside its sha, so a publish can merge into
+     what is actually there rather than replacing it. */
+  async currentFile(){
+    const r = await fetch(this.apiUrl()+"?ref="+this.BRANCH+"&t="+Date.now(),
+                          {headers:this.headers(), cache:"no-store"});
+    if(r.status===404) return {sha:null, data:null};
+    if(!r.ok) throw new Error(await this.explain(r));
+    const j = await r.json();
+    let data=null;
+    try{
+      const bin=atob((j.content||"").replace(/\n/g,""));
+      const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+      data=JSON.parse(new TextDecoder().decode(bytes));
+    }catch(e){ console.warn("[acgiba] committed roster unreadable, treating as empty"); }
+    return {sha:j.sha, data};
+  },
+
   async publish(payload, message){
     if(!this.hasToken()) throw new Error("No token saved.");
-    const sha = await this.currentSha();
-    const body = {
-      message: message || "Update roster from the coach portal",
-      content: this.b64(JSON.stringify(payload,null,2)+"\n"),
-      branch: this.BRANCH
-    };
-    if(sha) body.sha = sha;
-    const r = await fetch(this.apiUrl(), {
-      method:"PUT", headers:{...this.headers(),"Content-Type":"application/json"},
-      body: JSON.stringify(body)
-    });
-    if(!r.ok) throw new Error(await this.explain(r));
-    return payload.version;
+
+    /* Read, merge, write. If someone else publishes in the gap, GitHub
+       rejects the write on a stale sha; re-read and merge again rather than
+       making the coach retry by hand. */
+    for(let attempt=0; attempt<3; attempt++){
+      const {sha, data:remote} = await this.currentFile();
+      const merged = mergeRosters(remote, payload);
+
+      const body = {
+        message: message || "Update roster from the coach portal",
+        content: this.b64(JSON.stringify(merged,null,2)+"\n"),
+        branch: this.BRANCH
+      };
+      if(sha) body.sha = sha;
+
+      const r = await fetch(this.apiUrl(), {
+        method:"PUT", headers:{...this.headers(),"Content-Type":"application/json"},
+        body: JSON.stringify(body)
+      });
+
+      if(r.ok) return merged;
+      if(r.status===409 && attempt<2) continue;   // someone beat us to it; merge again
+      throw new Error(await this.explain(r));
+    }
   },
 
   /* Walks the request from the outside in: does GitHub answer at all, does it
